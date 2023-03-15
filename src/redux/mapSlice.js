@@ -21,7 +21,7 @@ export const mapSlice = createSlice({
     },
     reducers: {
         toggleTileFunction: (state, action) => {
-            if (state.choosingMode == 'start') {
+            if (state.choosingMode === 'start') {
 
                 const tempPropValue = !state.tiles[action.payload].isStart
 
@@ -42,7 +42,7 @@ export const mapSlice = createSlice({
 
                 // Finally, toggle the right property
                 state.tiles[action.payload].isStart = tempPropValue
-            } else if (state.choosingMode == 'end') {
+            } else if (state.choosingMode === 'end') {
 
                 const tempPropValue = !state.tiles[action.payload].isEnd
 

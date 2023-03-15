@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
     selectMap,
     toggleTileFunction,
-    togglePath
 } from './redux/mapSlice'
 import * as d3 from 'd3'
 import styles from './style/Path.module.css';
@@ -24,7 +23,7 @@ export function Path() {
                     .data(map)
                     .join("rect")
                         .attr("x", function(d, i) {
-                            if(i % 10 == 0) {
+                            if(i % 10 === 0) {
                                 xOffset = 0
                             } else {
                                 xOffset += 55
@@ -32,7 +31,7 @@ export function Path() {
                             return xOffset
                         })
                         .attr("y", function(d, i) {
-                            if(i % 10 == 0 && i != 0) {
+                            if(i % 10 === 0 && i !== 0) {
                                 yOffset += 55
                             }
 
@@ -58,10 +57,6 @@ export function Path() {
                             dispatch(toggleTileFunction(d.id))
                         })
         };
-
-
-
-
         drawMap();
     });
 
