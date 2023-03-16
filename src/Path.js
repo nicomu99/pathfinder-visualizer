@@ -2,7 +2,9 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
     selectMap,
-    toggleTileFunction,
+    selectStartIndex,
+    selectEndIndex,
+    toggleTileFunction
 } from './redux/mapSlice'
 import * as d3 from 'd3'
 import styles from './style/Path.module.css';
