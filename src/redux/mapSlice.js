@@ -97,11 +97,19 @@ export const mapSlice = createSlice({
         },
         changePickingMode: (state, action) => {
             state.choosingMode = action.payload
+        },
+        clearWholeMap: (state) => {
+            state.tiles.forEach((ele) => {
+                ele.isPath = false
+                ele.isWall = false
+                ele.isEnd = false
+                ele.isStart = false
+            })
         }
     }
 })
 
-export const { toggleTileFunction, togglePath, changePickingMode } = mapSlice.actions
+export const { toggleTileFunction, togglePath, changePickingMode, clearWholeMap } = mapSlice.actions
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of

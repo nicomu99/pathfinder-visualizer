@@ -10,7 +10,8 @@ import {
 	selectStartIndex,
 	selectEndIndex,
 	selectMap,
-	togglePath
+	togglePath,
+	clearWholeMap
 } from './redux/mapSlice'
 
 export function Visualizer() {
@@ -123,14 +124,18 @@ export function Visualizer() {
 		console.log(shortestPath)
 	}
 
+	function clearMap() {
+		dispatch(clearWholeMap())
+	}
+
 	return (
 		<div className={styles.container}>
 			<Dropdown>
-				<Dropdown.Toggle variant="Primary" id="dropdown-basic">
+				<Dropdown.Toggle variant="primary" id="dropdown-basic">
 					Change Algorithm
 				</Dropdown.Toggle>
 				<Dropdown.Menu>
-					<Dropdown.Item href="#/action-3">Action</Dropdown.Item>
+					<Dropdown.Item>Action</Dropdown.Item>
 				</Dropdown.Menu>
 			</Dropdown>
 			<DropdownButton id="dropdown-basic-button" title="Choose Picking Mode">
@@ -139,6 +144,7 @@ export function Visualizer() {
 				<Dropdown.Item onClick={() => choosePickingMode('end')}>End</Dropdown.Item>
 			</DropdownButton>
 			<Button variant="primary" onClick={() => runAlgorithm()}>Run Algorithm</Button>
+			<Button variant="primary" onClick={() => clearMap()}>Clear Map</Button>
 			<Path />
 		</div>
 	);
