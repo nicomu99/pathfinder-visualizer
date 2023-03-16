@@ -130,21 +130,23 @@ export function Visualizer() {
 
 	return (
 		<div className={styles.container}>
-			<Dropdown>
-				<Dropdown.Toggle variant="primary" id="dropdown-basic">
-					Change Algorithm
-				</Dropdown.Toggle>
-				<Dropdown.Menu>
-					<Dropdown.Item>Action</Dropdown.Item>
-				</Dropdown.Menu>
-			</Dropdown>
-			<DropdownButton id="dropdown-basic-button" title="Choose Picking Mode">
-				<Dropdown.Item onClick={() => choosePickingMode('wall')}>Wall</Dropdown.Item>
-				<Dropdown.Item onClick={() => choosePickingMode('start')}>Start</Dropdown.Item>
-				<Dropdown.Item onClick={() => choosePickingMode('end')}>End</Dropdown.Item>
-			</DropdownButton>
-			<Button variant="primary" onClick={() => runAlgorithm()}>Run Algorithm</Button>
-			<Button variant="primary" onClick={() => clearMap()}>Clear Map</Button>
+			<div className={styles.menu}>
+				<Dropdown>
+					<Dropdown.Toggle variant="primary" id="dropdown-basic">
+						Change Algorithm
+					</Dropdown.Toggle>
+					<Dropdown.Menu>
+						<Dropdown.Item>Action</Dropdown.Item>
+					</Dropdown.Menu>
+				</Dropdown>
+				<DropdownButton id="dropdown-basic-button" title="Choose Picking Mode">
+					<Dropdown.Item onClick={() => choosePickingMode('wall')}>Wall</Dropdown.Item>
+					<Dropdown.Item onClick={() => choosePickingMode('start')}>Start</Dropdown.Item>
+					<Dropdown.Item onClick={() => choosePickingMode('end')}>End</Dropdown.Item>
+				</DropdownButton>
+				<Button variant="primary" onClick={() => runAlgorithm()}>Run Algorithm</Button>
+				<Button variant="primary" onClick={() => clearMap()}>Clear Map</Button>
+			</div>
 			<Path />
 		</div>
 	);

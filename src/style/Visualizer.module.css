@@ -1,6 +1,12 @@
 .container {
     width: 900px;
     height: 900px;
-    border: 1px solid black;
     margin: 0 auto;
+}
+
+.menu {
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
 }
