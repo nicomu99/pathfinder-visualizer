@@ -27,6 +27,7 @@ for (let i = 0; i < 50; i++) {
         isStart: false,
         isEnd: false,
         neighbors: neighbors,
+        triggerRerender: true,
         id: i
     })
 }
@@ -44,6 +45,7 @@ export const mapSlice = createSlice({
 
         // Toggles a tiles function, meaning if it is a path, wall, end or simply nothing
         toggleTileFunction: (state, action) => {
+
             if (state.choosingMode === 'start') {
 
                 const tempPropValue = !state.tiles[action.payload].isStart
@@ -113,11 +115,15 @@ export const mapSlice = createSlice({
                 ele.isEnd = false
                 ele.isStart = false
             })
+        },
+
+        toggleRerenderOff: (state, action) => {
+            state.tiles[action.payload].triggerRerender = false
         }
     }
 })
 
-export const { toggleTileFunction, togglePath, changePickingMode, clearWholeMap } = mapSlice.actions
+export const { toggleTileFunction, togglePath, changePickingMode, clearWholeMap, toggleRerenderOff } = mapSlice.actions
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
