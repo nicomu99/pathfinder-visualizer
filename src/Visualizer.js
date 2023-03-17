@@ -24,20 +24,21 @@ export function Visualizer() {
 		dispatch(changePickingMode(pickingMode))
 	}
 
+	// Initializes the distance and predecessor array for the dijskstra algorithm
 	function initializeDistAndPred() {
 		let distance = []
 		let predecessor = []
 
-		map.forEach((elem, index) => {
+		map.forEach(() => {
 			distance.push(Infinity)
 			predecessor.push(null)
 		});
-
 		distance[startIndex] = 0
 
 		return [distance, predecessor]
 	}
 
+	// An implementation of the dijkstra pathfinding algorithm
 	function dijsktraAlgorithm() {
 		if (startIndex === '' || endIndex === '') {
 			// Need to have an ending an a start for this to work
@@ -45,18 +46,15 @@ export function Visualizer() {
 		}
 
 		let initialization = initializeDistAndPred()
-
 		let distance = initialization[0]
 		let predecessor = initialization[1]
 
-		let count = 0
-
+		// Delete all elements that are a wall from our map - they should not be passed by the path
 		map = map.filter(element => {
 			return !element.isWall
-		});
+		})
 
-		while (map.length !== 0 && count < 50) {
-			count++
+		while (map.length !== 0) {
 
 			// Find vertex with smalles value in distance
 			let smallestIndex = -1
@@ -67,32 +65,35 @@ export function Visualizer() {
 					smallestValue = distance[index]
 					smallestIndex = index
 				}
-				// console.log(index + " " + element.id + " " + distance[index])
-			});
+			})
 
+			// Get the element with the smallest path distance
 			var thisObject = map.filter(element => {
 				return element.id === smallestIndex
 			})
 
+			// Delete the element with the smallest path distance from our map - it should not be passed again
 			map = map.filter(element => {
 				return element.id !== smallestIndex
 			});
 
+			// The following line disables a warning
 			// eslint-disable-next-line
 			thisObject[0].neighbors.forEach(element => {
+				// Update the neighbors distances and predecessors
 
-				let elementExists = map.some(ele => {
+				// Only update if the tile has not been visited before
+				let tileExists = map.some(ele => {
 					return ele.id === element
 				})
 
-				if (elementExists) {
+				if (tileExists) {
 
+					//Find the neighbor and for each neighbor update the distance
 					var neighbor = map.filter(ele => {
 						return ele.id === element
 					})
-
 					if (!neighbor[0].isWall) {
-
 						let alternativeWay = distance[thisObject[0].id] + 1
 						if (alternativeWay < distance[element]) {
 							distance[element] = alternativeWay
@@ -107,6 +108,7 @@ export function Visualizer() {
 		return predecessor
 	}
 
+	// Generate the path calculated by the dijkstra algorithm
 	function generatePath(predecessors) {
 		let path = [endIndex]
 		let prevIndex = endIndex
@@ -119,26 +121,25 @@ export function Visualizer() {
 		return path
 	}
 
+	// Create a delay so the path is updated incrementally
 	const delay = ms => new Promise(res => setTimeout(res, ms))
 
+	// Updates the path tiles one by one
 	const updatePath = async (shortestPath) => {
-
 		for (let i = 0; i < shortestPath.length; i++) {
 			await delay(1000)
 			dispatch(togglePath(shortestPath[i]))
 		}
 	}
 
+	// Runs all required steps to generate the path and update the tiles color's
 	function runAlgorithm() {
 		let predecessors = dijsktraAlgorithm()
-
 		let shortestPath = generatePath(predecessors)
-
 		updatePath(shortestPath)
-
-		console.log(shortestPath)
 	}
 
+	// Clears the map of all highlighting
 	function clearMap() {
 		dispatch(clearWholeMap())
 	}

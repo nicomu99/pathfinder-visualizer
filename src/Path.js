@@ -2,8 +2,6 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {
     selectMap,
-    selectStartIndex,
-    selectEndIndex,
     toggleTileFunction
 } from './redux/mapSlice'
 import * as d3 from 'd3'
@@ -14,6 +12,8 @@ export function Path() {
     const dispatch = useDispatch();
 
     useEffect(() => {
+
+        // Draws the tiles onto the canvas
         function drawMap() {
             let mapSvg = d3.select("#mapSvg")
                         .attr("width", 545)
@@ -59,11 +59,8 @@ export function Path() {
                             dispatch(toggleTileFunction(d.id))
                         })
         };
-        drawMap();
+        drawMap()
     });
-
-    
-     
 
     return (
         <div id="mapDiv" className={styles.mapDiv}>

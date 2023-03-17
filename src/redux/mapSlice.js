@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+// Initializes the tileMap
 let tileMap = []
-
 for (let i = 0; i < 50; i++) {
 
     let neighbors = []
@@ -41,6 +41,8 @@ export const mapSlice = createSlice({
         endIndex: ''
     },
     reducers: {
+
+        // Toggles a tiles function, meaning if it is a path, wall, end or simply nothing
         toggleTileFunction: (state, action) => {
             if (state.choosingMode === 'start') {
 
@@ -92,12 +94,18 @@ export const mapSlice = createSlice({
                 state.tiles[action.payload].isWall = !state.tiles[action.payload].isWall   
             }
         },
+
+        // Toggles a tiles function to if it is a path or not
         togglePath: (state, action) => {
             state.tiles[action.payload].isPath = !state.tiles[action.payload].isPath
         },
+
+        // Changes the input a users selection of a tile causes
         changePickingMode: (state, action) => {
             state.choosingMode = action.payload
         },
+
+        // Clears the whole map of all highlighting
         clearWholeMap: (state) => {
             state.tiles.forEach((ele) => {
                 ele.isPath = false
