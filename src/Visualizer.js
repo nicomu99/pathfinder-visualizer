@@ -50,7 +50,10 @@ export function Visualizer() {
 		let predecessor = initialization[1]
 
 		let count = 0
-		console.log(map)
+
+		map = map.filter(element => {
+			return !element.isWall
+		});
 
 		while (map.length !== 0 && count < 50) {
 			count++
@@ -75,14 +78,26 @@ export function Visualizer() {
 				return element.id !== smallestIndex
 			});
 
+			// eslint-disable-next-line
 			thisObject[0].neighbors.forEach(element => {
-				if (map.some(ele => {
+
+				let elementExists = map.some(ele => {
 					return ele.id === element
-				})) {
-					let alternativeWay = distance[thisObject[0].id] + 1
-					if (alternativeWay < distance[element]) {
-						distance[element] = alternativeWay
-						predecessor[element] = smallestIndex
+				})
+
+				if (elementExists) {
+
+					var neighbor = map.filter(ele => {
+						return ele.id === element
+					})
+
+					if (!neighbor[0].isWall) {
+
+						let alternativeWay = distance[thisObject[0].id] + 1
+						if (alternativeWay < distance[element]) {
+							distance[element] = alternativeWay
+							predecessor[element] = smallestIndex
+						}
 					}
 				}
 			})
@@ -96,10 +111,10 @@ export function Visualizer() {
 		let path = [endIndex]
 		let prevIndex = endIndex
 
-		while(predecessors[prevIndex] != null) {
+		while (predecessors[prevIndex] != null) {
 			prevIndex = predecessors[prevIndex]
 			path.unshift(prevIndex)
-		} 
+		}
 
 		return path
 	}
@@ -108,7 +123,7 @@ export function Visualizer() {
 
 	const updatePath = async (shortestPath) => {
 
-		for(let i = 0; i < shortestPath.length; i++) {
+		for (let i = 0; i < shortestPath.length; i++) {
 			await delay(1000)
 			dispatch(togglePath(shortestPath[i]))
 		}
@@ -120,7 +135,7 @@ export function Visualizer() {
 		let shortestPath = generatePath(predecessors)
 
 		updatePath(shortestPath)
-	
+
 		console.log(shortestPath)
 	}
 
