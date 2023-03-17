@@ -127,7 +127,7 @@ export function Visualizer() {
 	// Updates the path tiles one by one
 	const updatePath = async (shortestPath) => {
 		for (let i = 0; i < shortestPath.length; i++) {
-			await delay(1000)
+			await delay(500)
 			dispatch(togglePath(shortestPath[i]))
 		}
 	}
