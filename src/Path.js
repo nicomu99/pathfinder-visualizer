@@ -12,7 +12,19 @@ export function Path() {
     const map = useSelector(selectMap);
     const dispatch = useDispatch();
 
+    function calculateColor(distance) {
+
+        let colorInterpolation = d3.interpolateHsl('#222', '#ddd')
+        var colourScale = d3.scaleLinear()
+                    .domain([0, 10])
+                    .range([0,1]);
+
+        return colorInterpolation(colourScale(distance))
+    }
+
     useEffect(() => {
+
+
 
         // Draws the tiles onto the canvas
         function drawMap() {
@@ -57,6 +69,10 @@ export function Path() {
                         return "#00B825"
                     } else if (d.isEnd) {
                         return "#860018"
+                    } else if(d.distance !== -1 && !d.isPath) {
+                        return calculateColor(d.distance)
+                    } else if(d.isFocused) {
+                        return "#0000bb"
                     }
                     return "#ddd"
                 })
@@ -75,19 +91,18 @@ export function Path() {
                         return "#00B825"
                     } else if (d.isEnd) {
                         return "#860018"
-                    }
+                    } else if(d.distance !== -1 && !d.isPath) {
+                        return calculateColor(d.distance)
+                    } else if(d.isFocused) {
+                        return "#0000bb"
+                    } 
                     return "#ddd"
                 })
         }
 
-        // redrawTiles()
         drawMap()
         redrawTiles()
     });
-
-    useEffect(() => {
-
-    })
 
     return (
         <div id="mapDiv" className={styles.mapDiv}>

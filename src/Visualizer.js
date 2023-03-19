@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
@@ -11,13 +11,16 @@ import {
 	selectEndIndex,
 	selectMap,
 	togglePath,
-	clearWholeMap
+	clearWholeMap,
+	updateDistance,
+	toggleIsFocused
 } from './redux/mapSlice'
 
 export function Visualizer() {
 	const dispatch = useDispatch()
 	const startIndex = useSelector(selectStartIndex)
 	const endIndex = useSelector(selectEndIndex)
+	const [updateOrder, setUpdateOrder] = useState([])
 	let map = useSelector(selectMap).slice()
 
 	function choosePickingMode(pickingMode) {
@@ -38,8 +41,17 @@ export function Visualizer() {
 		return [distance, predecessor]
 	}
 
+	async function updateDistanceValue(elementId, alternativeWay) {
+		await delay(500)
+		dispatch(updateDistance({id: elementId, newDistance: alternativeWay}))
+	}
+
+	async function focusTile(elementId) {
+		dispatch(toggleIsFocused(elementId))
+	}
+
 	// An implementation of the dijkstra pathfinding algorithm
-	function dijsktraAlgorithm() {
+	async function dijsktraAlgorithm() {
 		if (startIndex === '' || endIndex === '') {
 			// Need to have an ending an a start for this to work
 			return
@@ -72,6 +84,9 @@ export function Visualizer() {
 				return element.id === smallestIndex
 			})
 
+			focusTile(thisObject[0].id)
+			await delay(100)
+
 			// Delete the element with the smallest path distance from our map - it should not be passed again
 			map = map.filter(element => {
 				return element.id !== smallestIndex
@@ -98,11 +113,14 @@ export function Visualizer() {
 						if (alternativeWay < distance[element]) {
 							distance[element] = alternativeWay
 							predecessor[element] = smallestIndex
+							updateOrder.push({id: element, newDistance: alternativeWay})
 						}
 					}
 				}
 			})
 
+			focusTile(thisObject[0].id)
+			updateDistanceValue(thisObject[0].id, distance[thisObject[0].id])
 		}
 
 		return predecessor
@@ -125,7 +143,10 @@ export function Visualizer() {
 	const delay = ms => new Promise(res => setTimeout(res, ms))
 
 	// Updates the path tiles one by one
-	const updatePath = async (shortestPath) => {
+	async function updatePath(shortestPath) {
+
+		console.log(shortestPath)
+
 		for (let i = 0; i < shortestPath.length; i++) {
 			await delay(500)
 			dispatch(togglePath(shortestPath[i]))
@@ -133,8 +154,9 @@ export function Visualizer() {
 	}
 
 	// Runs all required steps to generate the path and update the tiles color's
-	function runAlgorithm() {
-		let predecessors = dijsktraAlgorithm()
+	async function runAlgorithm() {
+		let predecessors = await dijsktraAlgorithm()
+		console.log("hey")
 		let shortestPath = generatePath(predecessors)
 		updatePath(shortestPath)
 	}

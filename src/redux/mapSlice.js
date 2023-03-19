@@ -26,8 +26,10 @@ for (let i = 0; i < 50; i++) {
         isPath: false,
         isStart: false,
         isEnd: false,
-        neighbors: neighbors,
         triggerRerender: true,
+        isFocused: false,
+        neighbors: neighbors,
+        distance: -1,
         id: i
     })
 }
@@ -96,17 +98,14 @@ export const mapSlice = createSlice({
                 state.tiles[action.payload].isWall = !state.tiles[action.payload].isWall   
             }
         },
-
         // Toggles a tiles function to if it is a path or not
         togglePath: (state, action) => {
-            state.tiles[action.payload].isPath = !state.tiles[action.payload].isPath
+            state.tiles[action.payload].isPath = true
         },
-
         // Changes the input a users selection of a tile causes
         changePickingMode: (state, action) => {
             state.choosingMode = action.payload
         },
-
         // Clears the whole map of all highlighting
         clearWholeMap: (state) => {
             state.tiles.forEach((ele) => {
@@ -114,16 +113,22 @@ export const mapSlice = createSlice({
                 ele.isWall = false
                 ele.isEnd = false
                 ele.isStart = false
+                ele.distance = -1
             })
         },
-
         toggleRerenderOff: (state, action) => {
             state.tiles[action.payload].triggerRerender = false
+        },
+        toggleIsFocused: (state, action) => {
+            state.tiles[action.payload].isFocused = !state.tiles[action.payload].isFocused 
+        },
+        updateDistance: (state, action) => {
+            state.tiles[action.payload.id].distance = action.payload.newDistance
         }
     }
 })
 
-export const { toggleTileFunction, togglePath, changePickingMode, clearWholeMap, toggleRerenderOff } = mapSlice.actions
+export const { toggleTileFunction, togglePath, changePickingMode, clearWholeMap, toggleRerenderOff, updateDistance, toggleIsFocused } = mapSlice.actions
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
