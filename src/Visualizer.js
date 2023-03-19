@@ -20,9 +20,9 @@ export function Visualizer() {
 	const dispatch = useDispatch()
 	const startIndex = useSelector(selectStartIndex)
 	const endIndex = useSelector(selectEndIndex)
-	const [updateOrder, setUpdateOrder] = useState([])
 	let map = useSelector(selectMap).slice()
 
+	// Updates the picking mode in the store
 	function choosePickingMode(pickingMode) {
 		dispatch(changePickingMode(pickingMode))
 	}
@@ -41,11 +41,13 @@ export function Visualizer() {
 		return [distance, predecessor]
 	}
 
+	// Updates the distance values in the store
 	async function updateDistanceValue(elementId, alternativeWay) {
 		await delay(500)
 		dispatch(updateDistance({id: elementId, newDistance: alternativeWay}))
 	}
 
+	// Toggles the focus state of a tile in the store
 	async function focusTile(elementId) {
 		dispatch(toggleIsFocused(elementId))
 	}
@@ -113,12 +115,12 @@ export function Visualizer() {
 						if (alternativeWay < distance[element]) {
 							distance[element] = alternativeWay
 							predecessor[element] = smallestIndex
-							updateOrder.push({id: element, newDistance: alternativeWay})
 						}
 					}
 				}
 			})
 
+			// Update the focus and distance value
 			focusTile(thisObject[0].id)
 			updateDistanceValue(thisObject[0].id, distance[thisObject[0].id])
 		}
@@ -144,9 +146,6 @@ export function Visualizer() {
 
 	// Updates the path tiles one by one
 	async function updatePath(shortestPath) {
-
-		console.log(shortestPath)
-
 		for (let i = 0; i < shortestPath.length; i++) {
 			await delay(500)
 			dispatch(togglePath(shortestPath[i]))
@@ -156,7 +155,6 @@ export function Visualizer() {
 	// Runs all required steps to generate the path and update the tiles color's
 	async function runAlgorithm() {
 		let predecessors = await dijsktraAlgorithm()
-		console.log("hey")
 		let shortestPath = generatePath(predecessors)
 		updatePath(shortestPath)
 	}
