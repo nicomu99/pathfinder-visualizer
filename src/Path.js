@@ -61,7 +61,7 @@ export function Path() {
 
             d3.selectAll("rect")
                 .transition()
-                .duration(500)
+                .duration(50)
                 .attr("fill", (d) => {
                     if (d.isWall) {
                         return "#000"
