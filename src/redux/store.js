@@ -1,8 +1,10 @@
-import {configureStore} from '@reduxjs/toolkit'
+import { configureStore, applyMiddleware } from '@reduxjs/toolkit'
 import mapReducer from './mapSlice'
 
-export default configureStore({
+const store = configureStore({
     reducer: {
         map: mapReducer,
     }
 })
+
+export default store
