@@ -103,6 +103,11 @@ async function dijsktraAlgorithm(map, startIndex, endIndex) {
         // Update the focus and distance value
         focusTile(thisObject[0].id)
         updateDistanceValue(thisObject[0].id, distance[thisObject[0].id])
+
+
+        if(thisObject[0].id === endIndex) {
+            break
+        }
     }
 
     return predecessor
