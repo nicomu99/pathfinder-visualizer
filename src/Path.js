@@ -1,21 +1,23 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import {
     selectMap,
+    selectMaxDistance,
     toggleTileFunction
 } from './redux/mapSlice'
 import * as d3 from 'd3'
-import styles from './style/Path.module.css';
+import styles from './style/Path.module.css'
 
 export function Path() {
-    const map = useSelector(selectMap);
-    const dispatch = useDispatch();
+    const map = useSelector(selectMap)
+    const maxDistance = useSelector(selectMaxDistance)
+    const dispatch = useDispatch()
 
     // Interpolation for color coding the distance to the starting position
     function calculateColor(distance) {
         let colorInterpolation = d3.interpolateHsl('#222', '#ddd')
         var colourScale = d3.scaleLinear()
-                    .domain([0, 10])
+                    .domain([0, maxDistance])
                     .range([0,1]);
         return colorInterpolation(colourScale(distance))
     }

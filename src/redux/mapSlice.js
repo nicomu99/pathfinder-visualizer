@@ -6,16 +6,16 @@ for (let i = 0; i < 50; i++) {
 
     // Calculate neighbors
     let neighbors = []
-    if(i % 10 !== 0) {
+    if (i % 10 !== 0) {
         neighbors.push(i - 1)
     }
-    if(i % 9 !== 0 || i === 0) {
+    if (i % 9 !== 0 || i === 0) {
         neighbors.push(i + 1)
     }
-    if(i < 40) {
+    if (i < 40) {
         neighbors.push(i + 10)
     }
-    if(i > 9) {
+    if (i > 9) {
         neighbors.push(i - 10)
     }
 
@@ -39,7 +39,8 @@ export const mapSlice = createSlice({
         tiles: tileMap,
         choosingMode: 'wall',
         startIndex: '',
-        endIndex: ''
+        endIndex: '',
+        maxDistance: 0
     },
     reducers: {
         // Toggles a tiles function, meaning if it is a path, wall, end or simply nothing
@@ -90,7 +91,7 @@ export const mapSlice = createSlice({
                 // Toggle everything to off before changing the tile, so no collisions can happen
                 state.tiles[action.payload].isStart = false
                 state.tiles[action.payload].isEnd = false
-                state.tiles[action.payload].isWall = !state.tiles[action.payload].isWall   
+                state.tiles[action.payload].isWall = !state.tiles[action.payload].isWall
             }
         },
         // Toggles a tiles function to if it is a path or not
@@ -116,25 +117,30 @@ export const mapSlice = createSlice({
             state.tiles[action.payload].triggerRerender = false
         },
         toggleIsFocused: (state, action) => {
-            state.tiles[action.payload].isFocused = !state.tiles[action.payload].isFocused 
+            state.tiles[action.payload].isFocused = !state.tiles[action.payload].isFocused
         },
         updateDistance: (state, action) => {
+            if (state.maxDistance < action.payload.newDistance) {
+                state.maxDistance = action.payload.newDistance
+            }
+
             state.tiles[action.payload.id].distance = action.payload.newDistance
         }
     }
 })
 
-export const {  toggleTileFunction, 
-                    togglePath, 
-                    changePickingMode, 
-                    clearWholeMap, 
-                    toggleRerenderOff, 
-                    updateDistance, 
-                    toggleIsFocused 
-            } = mapSlice.actions
+export const { toggleTileFunction,
+    togglePath,
+    changePickingMode,
+    clearWholeMap,
+    toggleRerenderOff,
+    updateDistance,
+    toggleIsFocused
+} = mapSlice.actions
 
 export const selectMap = (state) => state.map.tiles
 export const selectStartIndex = (state) => state.map.startIndex
-export const selectEndIndex = (state) => state.map.endIndex 
+export const selectEndIndex = (state) => state.map.endIndex
+export const selectMaxDistance = (state) => state.map.maxDistance
 
 export default mapSlice.reducer
