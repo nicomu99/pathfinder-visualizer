@@ -5,18 +5,10 @@ import {
 } from '../redux/mapSlice'
 import store from '../redux/store'
 
-let map = []
-let startIndex = -1
-let endIndex = -1
-
 // Initializes the distance and predecessor array for the dijskstra algorithm
-function initializeDistAndPred() {
+function initializeDistAndPred(map, startIndex) {
     let distance = []
     let predecessor = []
-
-    map = store.getState().map.tiles
-    startIndex = store.getState().map.startIndex
-    endIndex = store.getState().map.endIndex
 
     map.forEach(() => {
         distance.push(Infinity)
@@ -39,13 +31,15 @@ async function focusTile(elementId) {
 }
 
 // An implementation of the dijkstra pathfinding algorithm
-async function dijsktraAlgorithm() {
+async function dijsktraAlgorithm(map, startIndex, endIndex) {
+
+
     if (startIndex === '' || endIndex === '') {
         // Need to have an ending an a start for this to work
         return
     }
 
-    let initialization = initializeDistAndPred()
+    let initialization = initializeDistAndPred(map, startIndex)
     let distance = initialization[0]
     let predecessor = initialization[1]
 
@@ -115,7 +109,7 @@ async function dijsktraAlgorithm() {
 }
 
 // Generate the path calculated by the dijkstra algorithm
-function generatePath(predecessors) {
+function generatePath(predecessors, endIndex) {
     let path = [endIndex]
     let prevIndex = endIndex
 
@@ -140,8 +134,13 @@ async function updatePath(shortestPath) {
 
 // Runs all required steps to generate the path and update the tiles color's
 async function runAlgorithm() {
-    let predecessors = await dijsktraAlgorithm()
-    let shortestPath = generatePath(predecessors)
+
+    let map = store.getState().map.tiles
+    let startIndex = store.getState().map.startIndex
+    let endIndex = store.getState().map.endIndex
+
+    let predecessors = await dijsktraAlgorithm(map, startIndex, endIndex)
+    let shortestPath = generatePath(predecessors, endIndex)
     updatePath(shortestPath)
 }
 
