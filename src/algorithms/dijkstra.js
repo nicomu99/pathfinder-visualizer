@@ -1,24 +1,9 @@
-import { useDispatch, useSelector } from 'react-redux';
 import {
     togglePath,
     updateDistance,
     toggleIsFocused,
-    selectMap,
-    selectStartIndex,
-    selectEndIndex
 } from '../redux/mapSlice'
 import store from '../redux/store'
-
-const thunkMiddleware = ({ dispatch, getState }) =>
-    next =>
-        action => {
-            if (typeof action === 'function') {
-                return action(dispatch, getState)
-            }
-
-            return next(action)
-        }
-
 
 let map = []
 let startIndex = -1
