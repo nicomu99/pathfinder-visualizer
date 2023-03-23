@@ -15,7 +15,7 @@ export function Path() {
 
     // Interpolation for color coding the distance to the starting position
     function calculateColor(distance) {
-        let colorInterpolation = d3.interpolateHsl('#ddd', '#222')
+        let colorInterpolation = d3.interpolateHsl("#000000", "#999999")
         var colourScale = d3.scaleLinear()
                     .domain([0, maxDistance])
                     .range([0,1]);
