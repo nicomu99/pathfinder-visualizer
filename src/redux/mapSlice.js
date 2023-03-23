@@ -125,11 +125,10 @@ export const mapSlice = createSlice({
             state.tiles[action.payload].isOut = true
         },
         updateDistance: (state, action) => {
-            if (state.maxDistance < action.payload.newDistance) {
-                state.maxDistance = action.payload.newDistance
-            }
-
             state.tiles[action.payload.id].distance = action.payload.newDistance
+        },
+        setMaxDistance: (state, action) => {
+            state.maxDistance = action.payload
         }
     }
 })
@@ -141,7 +140,8 @@ export const { toggleTileFunction,
     toggleRerenderOff,
     updateDistance,
     toggleIsFocused,
-    toggleIsOut
+    toggleIsOut,
+    setMaxDistance
 } = mapSlice.actions
 
 export const selectMap = (state) => state.map.tiles

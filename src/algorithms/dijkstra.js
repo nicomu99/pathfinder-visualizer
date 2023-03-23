@@ -2,7 +2,8 @@ import {
     togglePath,
     updateDistance,
     toggleIsFocused,
-    toggleIsOut
+    toggleIsOut,
+    setMaxDistance
 } from '../redux/mapSlice'
 import store from '../redux/store'
 
@@ -21,13 +22,12 @@ function initializeDistAndPred(map, startIndex) {
 }
 
 // Updates the distance values in the store
-async function updateDistanceValue(elementId, alternativeWay) {
-    await delay(500)
+function updateDistanceValue(elementId, alternativeWay) {
     store.dispatch(updateDistance({ id: elementId, newDistance: alternativeWay }))
 }
 
 // Toggles the focus state of a tile in the store
-async function focusTile(elementId) {
+function focusTile(elementId) {
     store.dispatch(toggleIsFocused(elementId))
 }
 
@@ -43,6 +43,7 @@ async function dijsktraAlgorithm(map, startIndex, endIndex) {
     let initialization = initializeDistAndPred(map, startIndex)
     let distance = initialization[0]
     let predecessor = initialization[1]
+    let focusOrdering = []
 
     // Delete all elements that are a wall from our map - they should not be passed by the path
     map = map.filter(element => {
@@ -67,8 +68,7 @@ async function dijsktraAlgorithm(map, startIndex, endIndex) {
             return element.id === smallestIndex
         })
 
-        focusTile(thisObject[0].id)
-        await delay(100)
+        focusOrdering.push(thisObject[0].id)
 
         // Delete the element with the smallest path distance from our map - it should not be passed again
         map = map.filter(element => {
@@ -101,17 +101,17 @@ async function dijsktraAlgorithm(map, startIndex, endIndex) {
             }
         })
 
-        // Update the focus and distance value
-        focusTile(thisObject[0].id)
-        updateDistanceValue(thisObject[0].id, distance[thisObject[0].id])
-
 
         if(thisObject[0].id === endIndex) {
             break
         }
     }
 
-    return predecessor
+    return {
+        predecessor: predecessor,
+        distance: distance,
+        focusOrdering
+    }
 }
 
 // Generate the path calculated by the dijkstra algorithm
@@ -139,10 +139,31 @@ async function updatePath(shortestPath) {
         }
     }
 
-
     for (let i = 0; i < shortestPath.length; i++) {
         await delay(500)
         store.dispatch(togglePath(shortestPath[i]))
+    }
+}
+
+
+async function visualizeFocusOrdering(focusOrdering, distance) {
+
+    distance = distance.map(d => {
+        if(d === Infinity) {
+            return -1
+        }
+        return d
+    })
+
+    let max = Math.max(...distance)
+    store.dispatch(setMaxDistance(max))
+    console.log(max)
+
+    for(let i = 0; i < focusOrdering.length; i++) {
+        focusTile(focusOrdering[i])
+        await delay(200)
+        focusTile(focusOrdering[i])
+        updateDistanceValue(focusOrdering[i], distance[focusOrdering[i]])
     }
 }
 
@@ -153,8 +174,11 @@ async function runAlgorithm() {
     let startIndex = store.getState().map.startIndex
     let endIndex = store.getState().map.endIndex
 
-    let predecessors = await dijsktraAlgorithm(map, startIndex, endIndex)
-    let shortestPath = generatePath(predecessors, endIndex)
+    let dijkstra = await dijsktraAlgorithm(map, startIndex, endIndex)
+    let shortestPath = generatePath(dijkstra.predecessor, endIndex)
+
+    await visualizeFocusOrdering(dijkstra.focusOrdering, dijkstra.distance)
+
     updatePath(shortestPath)
 }
 

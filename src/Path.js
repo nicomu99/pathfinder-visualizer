@@ -15,7 +15,7 @@ export function Path() {
 
     // Interpolation for color coding the distance to the starting position
     function calculateColor(distance) {
-        let colorInterpolation = d3.interpolateHsl("#000000", "#999999")
+        let colorInterpolation = d3.interpolateHsl("#222222", "#999999")
         var colourScale = d3.scaleLinear()
                     .domain([0, maxDistance])
                     .range([0,1]);
@@ -59,7 +59,7 @@ export function Path() {
 
             d3.selectAll("rect")
                 .transition()
-                .duration(50)
+                .duration(100)
                 .attr("fill", (d) => {
                     if (d.isWall) {
                         return "#000"
@@ -71,9 +71,7 @@ export function Path() {
                         return calculateColor(d.distance)
                     } else if(d.isFocused) {
                         return "#0000bb"
-                    } else if(d.isOut) {
-                        return "#eee"
-                    }
+                    } 
                     return "#ddd"
                 })
         }
@@ -81,7 +79,7 @@ export function Path() {
         function redrawTiles() {
             d3.selectAll("rect")
                 .transition()
-                .duration(500)
+                .duration(100)
                 .attr("fill", (d) => {
                     if (d.isWall) {
                         return "#000"
@@ -95,8 +93,6 @@ export function Path() {
                         return calculateColor(d.distance)
                     } else if(d.isFocused) {
                         return "#0000bb"
-                    } else if(d.isOut) {
-                        return "#eee"
                     }
                     return "#ddd"
                 })
