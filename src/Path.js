@@ -71,6 +71,8 @@ export function Path() {
                         return calculateColor(d.distance)
                     } else if(d.isFocused) {
                         return "#0000bb"
+                    } else if(d.isOut) {
+                        return "#eee"
                     }
                     return "#ddd"
                 })
@@ -93,7 +95,9 @@ export function Path() {
                         return calculateColor(d.distance)
                     } else if(d.isFocused) {
                         return "#0000bb"
-                    } 
+                    } else if(d.isOut) {
+                        return "#eee"
+                    }
                     return "#ddd"
                 })
         }

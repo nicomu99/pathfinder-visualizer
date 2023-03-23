@@ -2,6 +2,7 @@ import {
     togglePath,
     updateDistance,
     toggleIsFocused,
+    toggleIsOut
 } from '../redux/mapSlice'
 import store from '../redux/store'
 
@@ -131,6 +132,14 @@ const delay = ms => new Promise(res => setTimeout(res, ms))
 
 // Updates the path tiles one by one
 async function updatePath(shortestPath) {
+
+    for(let i = 0; i < 50; i++) {
+        if(!shortestPath.includes(i)) {
+            store.dispatch(toggleIsOut(i))
+        }
+    }
+
+
     for (let i = 0; i < shortestPath.length; i++) {
         await delay(500)
         store.dispatch(togglePath(shortestPath[i]))
