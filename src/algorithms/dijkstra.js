@@ -140,7 +140,7 @@ async function updatePath(shortestPath) {
     }
 
     for (let i = 0; i < shortestPath.length; i++) {
-        await delay(500)
+        await delay(50)
         store.dispatch(togglePath(shortestPath[i]))
     }
 }
@@ -160,7 +160,7 @@ async function visualizeFocusOrdering(focusOrdering, distance) {
 
     for(let i = 0; i < focusOrdering.length; i++) {
         focusTile(focusOrdering[i])
-        await delay(200)
+        await delay(1)
         focusTile(focusOrdering[i])
         updateDistanceValue(focusOrdering[i], distance[focusOrdering[i]])
     }

@@ -2,21 +2,21 @@ import { createSlice } from '@reduxjs/toolkit'
 
 // Initializes the tileMap
 let tileMap = []
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 800; i++) {
 
     // Calculate neighbors
     let neighbors = []
-    if (i % 10 !== 0) {
+    if (i % 40 !== 0) {
         neighbors.push(i - 1)
     }
-    if (i % 10 !== 9) {
+    if (i % 10 !== 39) {
         neighbors.push(i + 1)
     }
-    if (i < 90) {
-        neighbors.push(i + 10)
+    if (i < 760) {
+        neighbors.push(i + 40)
     }
-    if (i > 9) {
-        neighbors.push(i - 10)
+    if (i > 39) {
+        neighbors.push(i - 40)
     }
 
     // Initialize the tile
@@ -114,6 +114,9 @@ export const mapSlice = createSlice({
                 ele.distance = -1
                 ele.isOut = false
             })
+
+            state.startIndex = ''
+            state.endIndex = ''
         },
         toggleRerenderOff: (state, action) => {
             state.tiles[action.payload].triggerRerender = false

@@ -25,14 +25,14 @@ export function Path() {
     useEffect(() => {
 
         // Calculate the width of the canvas
-        const tilesPerRow = 10
-        const tileSize = 50
-        const tilePadding = 5
-        const width = tilesPerRow * (tileSize + tilePadding) - 5
+        const tilesPerRow = 40
+        const tileSize = 15 
+        const tilePadding = 3
+        const width = tilesPerRow * (tileSize + tilePadding) - tilePadding
 
         // Calculate the height of the canvas using the number of rows
         const tilesPerColumn = map.length / tilesPerRow
-        const height = tilesPerColumn * (tileSize + tilePadding) - 5
+        const height = tilesPerColumn * (tileSize + tilePadding) - tilePadding
 
         // Draws the tiles onto the canvas
         function drawMap() {
@@ -46,22 +46,22 @@ export function Path() {
                 .data(map)
                 .join("rect")
                 .attr("x", function (d, i) {
-                    if (i % 10 === 0) {
+                    if (i % tilesPerRow === 0) {
                         xOffset = 0
                     } else {
-                        xOffset += 55
+                        xOffset += tileSize + tilePadding
                     }
                     return xOffset
                 })
                 .attr("y", function (d, i) {
-                    if (i % 10 === 0 && i !== 0) {
-                        yOffset += 55
+                    if (i % tilesPerRow === 0 && i !== 0) {
+                        yOffset += tileSize + tilePadding
                     }
 
                     return yOffset
                 })
-                .attr("width", 50)
-                .attr("height", 50)
+                .attr("width", tileSize)
+                .attr("height", tileSize)
                 .attr("class", "tile")
                 .on("click", function (e, d) {
                     dispatch(toggleTileFunction(d.id))
