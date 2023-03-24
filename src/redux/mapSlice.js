@@ -2,17 +2,17 @@ import { createSlice } from '@reduxjs/toolkit'
 
 // Initializes the tileMap
 let tileMap = []
-for (let i = 0; i < 50; i++) {
+for (let i = 0; i < 100; i++) {
 
     // Calculate neighbors
     let neighbors = []
     if (i % 10 !== 0) {
         neighbors.push(i - 1)
     }
-    if (i % 9 !== 0 || i === 0) {
+    if (i % 10 !== 9) {
         neighbors.push(i + 1)
     }
-    if (i < 40) {
+    if (i < 90) {
         neighbors.push(i + 10)
     }
     if (i > 9) {

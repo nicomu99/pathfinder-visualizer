@@ -24,11 +24,21 @@ export function Path() {
 
     useEffect(() => {
 
+        // Calculate the width of the canvas
+        const tilesPerRow = 10
+        const tileSize = 50
+        const tilePadding = 5
+        const width = tilesPerRow * (tileSize + tilePadding) - 5
+
+        // Calculate the height of the canvas using the number of rows
+        const tilesPerColumn = map.length / tilesPerRow
+        const height = tilesPerColumn * (tileSize + tilePadding) - 5
+
         // Draws the tiles onto the canvas
         function drawMap() {
             let mapSvg = d3.select("#mapSvg")
-                .attr("width", 545)
-                .attr("height", 270)
+                .attr("width", width)
+                .attr("height", height)
 
             let yOffset = 0
             let xOffset = 0

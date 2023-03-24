@@ -63,12 +63,12 @@ async function dijsktraAlgorithm(map, startIndex, endIndex) {
             }
         })
 
-        // Get the element with the smallest path distance
-        var thisObject = map.filter(element => {
+        // Get the element
+        var currentTile = map.filter(element => {
             return element.id === smallestIndex
-        })
+        })[0]
 
-        focusOrdering.push(thisObject[0].id)
+        focusOrdering.push(currentTile.id)
 
         // Delete the element with the smallest path distance from our map - it should not be passed again
         map = map.filter(element => {
@@ -77,7 +77,7 @@ async function dijsktraAlgorithm(map, startIndex, endIndex) {
 
         // The following line disables a warning
         // eslint-disable-next-line
-        thisObject[0].neighbors.forEach(element => {
+        currentTile.neighbors.forEach(element => {
             // Update the neighbors distances and predecessors
 
             // Only update if the tile has not been visited before
@@ -92,7 +92,7 @@ async function dijsktraAlgorithm(map, startIndex, endIndex) {
                     return ele.id === element
                 })
                 if (!neighbor[0].isWall) {
-                    let alternativeWay = distance[thisObject[0].id] + 1
+                    let alternativeWay = distance[currentTile.id] + 1
                     if (alternativeWay < distance[element]) {
                         distance[element] = alternativeWay
                         predecessor[element] = smallestIndex
@@ -102,7 +102,7 @@ async function dijsktraAlgorithm(map, startIndex, endIndex) {
         })
 
 
-        if(thisObject[0].id === endIndex) {
+        if(currentTile.id === endIndex) {
             break
         }
     }
@@ -133,7 +133,7 @@ const delay = ms => new Promise(res => setTimeout(res, ms))
 // Updates the path tiles one by one
 async function updatePath(shortestPath) {
 
-    for(let i = 0; i < 50; i++) {
+    for(let i = 0; i < 100; i++) {
         if(!shortestPath.includes(i)) {
             store.dispatch(toggleIsOut(i))
         }
@@ -157,7 +157,6 @@ async function visualizeFocusOrdering(focusOrdering, distance) {
 
     let max = Math.max(...distance)
     store.dispatch(setMaxDistance(max))
-    console.log(max)
 
     for(let i = 0; i < focusOrdering.length; i++) {
         focusTile(focusOrdering[i])
