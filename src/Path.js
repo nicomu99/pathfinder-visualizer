@@ -13,15 +13,6 @@ export function Path() {
     const maxDistance = useSelector(selectMaxDistance)
     const dispatch = useDispatch()
 
-    // Interpolation for color coding the distance to the starting position
-    function calculateColor(distance) {
-        let colorInterpolation = d3.interpolateHsl("#222222", "#999999")
-        var colourScale = d3.scaleLinear()
-                    .domain([0, maxDistance])
-                    .range([0,1]);
-        return colorInterpolation(colourScale(distance))
-    }
-
     useEffect(() => {
 
         // Calculate the width of the canvas
@@ -72,15 +63,15 @@ export function Path() {
                 .duration(100)
                 .attr("fill", (d) => {
                     if (d.isWall) {
-                        return "#000"
+                        return "#E3B448"
                     } else if (d.isStart) {
                         return "#00B825"
                     } else if (d.isEnd) {
                         return "#860018"
                     } else if(d.distance !== -1 && !d.isPath) {
-                        return calculateColor(d.distance)
+                        return "#000"
                     } else if(d.isFocused) {
-                        return "#0000bb"
+                        return "#ccc"
                     } 
                     return "#ddd"
                 })
@@ -92,17 +83,17 @@ export function Path() {
                 .duration(100)
                 .attr("fill", (d) => {
                     if (d.isWall) {
-                        return "#000"
+                        return "#E3B448"
                     } else if (d.isPath) {
-                        return "#00E02D"
+                        return "#3A6B35"
                     } else if (d.isStart) {
                         return "#00B825"
                     } else if (d.isEnd) {
                         return "#860018"
                     } else if(d.distance !== -1 && !d.isPath) {
-                        return calculateColor(d.distance)
+                        return "#000"
                     } else if(d.isFocused) {
-                        return "#0000bb"
+                        return "#ccc"
                     }
                     return "#ddd"
                 })
