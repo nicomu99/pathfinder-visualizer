@@ -8,20 +8,6 @@ import {
 } from '../redux/mapSlice'
 import store from '../redux/store'
 
-// Initializes the distance and predecessor array for the dijskstra algorithm
-function initializeDistAndPred(map, startIndex) {
-    let distance = []
-    let predecessor = []
-
-    map.forEach(() => {
-        distance.push(Infinity)
-        predecessor.push(null)
-    });
-    distance[startIndex] = 0
-
-    return [distance, predecessor]
-}
-
 // Updates the distance values in the store
 function updateDistanceValue(elementId, alternativeWay) {
     store.dispatch(updateDistance({ id: elementId, newDistance: alternativeWay }))
@@ -40,23 +26,24 @@ async function dijsktraAlgorithm(map, startIndex, endIndex) {
         return
     }
 
-    let initialization = initializeDistAndPred(map, startIndex)
-    let distance = initialization[0]
-    let predecessor = initialization[1]
+    // Initialize helper arrays
     let focusOrdering = []
+    let distance = Array(100).fill(Infinity)
+    let predecessor = Array(100).fill(null)
+    distance[startIndex] = 0
 
-    // Delete all elements that are a wall from our map - they should not be passed by the path
-    map = map.filter(element => {
-        return !element.isWall
-    })
+    // We are not deleting tiles, so we need a different measure of when everything has been visited
+    let count = 0
 
-    while (map.length !== 0) {
+    while (count < map.length) {
+
+        count++
 
         // Find vertex with smallest value in distance
         let smallestIndex = -1
         let smallestValue = Infinity
         map.forEach(element => {
-            if(!element.wasVisited) {
+            if (!element.wasVisited && !element.isWall) {
                 let index = element.id
                 if (distance[index] < smallestValue) {
                     smallestValue = distance[index]
@@ -65,42 +52,34 @@ async function dijsktraAlgorithm(map, startIndex, endIndex) {
             }
         })
 
-        // Get the element
+        // Get the current element
         var currentTile = map[smallestIndex]
-
         focusOrdering.push(currentTile.id)
 
-        // Delete the element with the smallest path distance from our map - it should not be passed again
+        // Mark the tile visited and update the map
         store.dispatch(toggleWasVisited(currentTile.id))
-        
-        // Update map
         map = store.getState().map.tiles
 
         // The following line disables a warning
         // eslint-disable-next-line
         currentTile.neighbors.forEach(element => {
             // Update the neighbors distances and predecessors
+            let neighbor = map[element]
+            let tileNotVisited = neighbor.wasVisited === false
+            let tileIsNotWall = neighbor.isWall === false
 
-            // Only update if the tile has not been visited before
-            let tileExists = map[element].wasVisited === false
-
-            if (tileExists) {
-
-                //Find the neighbor and for each neighbor update the distance
-                var neighbor = map[element]
-
-                if (!neighbor.isWall) {
-                    let alternativeWay = distance[currentTile.id] + 1
-                    if (alternativeWay < distance[element]) {
-                        distance[element] = alternativeWay
-                        predecessor[element] = smallestIndex
-                    }
+            // Only update if the tile has not been visited before and it is not a wall
+            if (tileNotVisited && tileIsNotWall) {
+                let alternativeWay = distance[currentTile.id] + 1
+                if (alternativeWay < distance[element]) {
+                    distance[element] = alternativeWay
+                    predecessor[element] = smallestIndex
                 }
             }
         })
 
-
-        if(currentTile.id === endIndex) {
+        // Check if we already found end tile
+        if (currentTile.id === endIndex) {
             break
         }
     }
@@ -130,13 +109,6 @@ const delay = ms => new Promise(res => setTimeout(res, ms))
 
 // Updates the path tiles one by one
 async function updatePath(shortestPath) {
-
-    for(let i = 0; i < 100; i++) {
-        if(!shortestPath.includes(i)) {
-            store.dispatch(toggleIsOut(i))
-        }
-    }
-
     for (let i = 0; i < shortestPath.length; i++) {
         await delay(50)
         store.dispatch(togglePath(shortestPath[i]))
@@ -147,7 +119,7 @@ async function updatePath(shortestPath) {
 async function visualizeFocusOrdering(focusOrdering, distance) {
 
     distance = distance.map(d => {
-        if(d === Infinity) {
+        if (d === Infinity) {
             return -1
         }
         return d
@@ -156,7 +128,7 @@ async function visualizeFocusOrdering(focusOrdering, distance) {
     let max = Math.max(...distance)
     store.dispatch(setMaxDistance(max))
 
-    for(let i = 0; i < focusOrdering.length; i++) {
+    for (let i = 0; i < focusOrdering.length; i++) {
         focusTile(focusOrdering[i])
         await delay(20)
         focusTile(focusOrdering[i])

@@ -27,7 +27,6 @@ for (let i = 0; i < 800; i++) {
         isEnd: false,
         triggerRerender: true,
         isFocused: false,
-        isOut: false,
         wasVisited: false,
         neighbors: neighbors,
         distance: -1,
@@ -114,7 +113,6 @@ export const mapSlice = createSlice({
                 ele.isFocused = false
                 ele.wasVisited = false
                 ele.distance = -1
-                ele.isOut = false
             })
 
             state.startIndex = ''
@@ -125,9 +123,6 @@ export const mapSlice = createSlice({
         },
         toggleIsFocused: (state, action) => {
             state.tiles[action.payload].isFocused = !state.tiles[action.payload].isFocused
-        },
-        toggleIsOut: (state, action) => {
-            state.tiles[action.payload].isOut = true
         },
         toggleWasVisited: (state, action) => {
             state.tiles[action.payload].wasVisited = true
@@ -148,7 +143,6 @@ export const { toggleTileFunction,
     toggleRerenderOff,
     updateDistance,
     toggleIsFocused,
-    toggleIsOut,
     setMaxDistance,
     toggleWasVisited
 } = mapSlice.actions
