@@ -3,7 +3,8 @@ import {
     updateDistance,
     toggleIsFocused,
     toggleIsOut,
-    setMaxDistance
+    setMaxDistance,
+    toggleWasVisited
 } from '../redux/mapSlice'
 import store from '../redux/store'
 
@@ -34,7 +35,6 @@ function focusTile(elementId) {
 // An implementation of the dijkstra pathfinding algorithm
 async function dijsktraAlgorithm(map, startIndex, endIndex) {
 
-
     if (startIndex === '' || endIndex === '') {
         // Need to have an ending an a start for this to work
         return
@@ -52,28 +52,29 @@ async function dijsktraAlgorithm(map, startIndex, endIndex) {
 
     while (map.length !== 0) {
 
-        // Find vertex with smalles value in distance
+        // Find vertex with smallest value in distance
         let smallestIndex = -1
         let smallestValue = Infinity
         map.forEach(element => {
-            let index = element.id
-            if (distance[index] < smallestValue) {
-                smallestValue = distance[index]
-                smallestIndex = index
+            if(!element.wasVisited) {
+                let index = element.id
+                if (distance[index] < smallestValue) {
+                    smallestValue = distance[index]
+                    smallestIndex = index
+                }
             }
         })
 
         // Get the element
-        var currentTile = map.filter(element => {
-            return element.id === smallestIndex
-        })[0]
+        var currentTile = map[smallestIndex]
 
         focusOrdering.push(currentTile.id)
 
         // Delete the element with the smallest path distance from our map - it should not be passed again
-        map = map.filter(element => {
-            return element.id !== smallestIndex
-        });
+        store.dispatch(toggleWasVisited(currentTile.id))
+        
+        // Update map
+        map = store.getState().map.tiles
 
         // The following line disables a warning
         // eslint-disable-next-line
@@ -81,17 +82,14 @@ async function dijsktraAlgorithm(map, startIndex, endIndex) {
             // Update the neighbors distances and predecessors
 
             // Only update if the tile has not been visited before
-            let tileExists = map.some(ele => {
-                return ele.id === element
-            })
+            let tileExists = map[element].wasVisited === false
 
             if (tileExists) {
 
                 //Find the neighbor and for each neighbor update the distance
-                var neighbor = map.filter(ele => {
-                    return ele.id === element
-                })
-                if (!neighbor[0].isWall) {
+                var neighbor = map[element]
+
+                if (!neighbor.isWall) {
                     let alternativeWay = distance[currentTile.id] + 1
                     if (alternativeWay < distance[element]) {
                         distance[element] = alternativeWay
@@ -160,7 +158,7 @@ async function visualizeFocusOrdering(focusOrdering, distance) {
 
     for(let i = 0; i < focusOrdering.length; i++) {
         focusTile(focusOrdering[i])
-        await delay(1)
+        await delay(20)
         focusTile(focusOrdering[i])
         updateDistanceValue(focusOrdering[i], distance[focusOrdering[i]])
     }
