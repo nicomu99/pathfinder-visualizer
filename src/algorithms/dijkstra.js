@@ -1,3 +1,4 @@
+import { current } from '@reduxjs/toolkit'
 import {
     togglePath,
     updateDistance,
@@ -28,8 +29,8 @@ async function dijsktraAlgorithm(map, startIndex, endIndex) {
 
     // Initialize helper arrays
     let focusOrdering = []
-    let distance = Array(100).fill(Infinity)
-    let predecessor = Array(100).fill(null)
+    let distance = Array(map.length).fill(Infinity)
+    let predecessor = Array(map.length).fill(null)
     distance[startIndex] = 0
 
     // We are not deleting tiles, so we need a different measure of when everything has been visited
@@ -54,6 +55,14 @@ async function dijsktraAlgorithm(map, startIndex, endIndex) {
 
         // Get the current element
         var currentTile = map[smallestIndex]
+
+        if(currentTile === undefined) {
+            console.log(map)
+        }
+
+        //console.log("Current tile:" + currentTile)
+        //console.log("Smallest index:" + smallestIndex)
+
         focusOrdering.push(currentTile.id)
 
         // Mark the tile visited and update the map
@@ -65,11 +74,11 @@ async function dijsktraAlgorithm(map, startIndex, endIndex) {
         currentTile.neighbors.forEach(element => {
             // Update the neighbors distances and predecessors
             let neighbor = map[element]
-            let tileNotVisited = neighbor.wasVisited === false
+            // let tileNotVisited = neighbor.wasVisited === false
             let tileIsNotWall = neighbor.isWall === false
 
             // Only update if the tile has not been visited before and it is not a wall
-            if (tileNotVisited && tileIsNotWall) {
+            if (tileIsNotWall) {
                 let alternativeWay = distance[currentTile.id] + 1
                 if (alternativeWay < distance[element]) {
                     distance[element] = alternativeWay
@@ -115,6 +124,12 @@ async function updatePath(shortestPath) {
     }
 }
 
+async function untoggleVisited(focusOrdering) {
+    for (let i = 0; i < focusOrdering.length; i++) {
+        store.dispatch(toggleWasVisited(focusOrdering[i]))
+    }
+}
+
 
 async function visualizeFocusOrdering(focusOrdering, distance) {
 
@@ -126,14 +141,17 @@ async function visualizeFocusOrdering(focusOrdering, distance) {
     })
 
     let max = Math.max(...distance)
+
+    await untoggleVisited(focusOrdering)
     store.dispatch(setMaxDistance(max))
 
     for (let i = 0; i < focusOrdering.length; i++) {
         focusTile(focusOrdering[i])
-        await delay(20)
+        await delay(10)
         focusTile(focusOrdering[i])
-        updateDistanceValue(focusOrdering[i], distance[focusOrdering[i]])
+        store.dispatch(toggleWasVisited(focusOrdering[i]))
     }
+
 }
 
 // Runs all required steps to generate the path and update the tiles color's

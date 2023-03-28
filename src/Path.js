@@ -68,9 +68,7 @@ export function Path() {
                         return "#00B825"
                     } else if (d.isEnd) {
                         return "#860018"
-                    } else if(d.distance !== -1 && !d.isPath) {
-                        return "#000"
-                    } else if(d.isFocused) {
+                    }  else if(d.isFocused) {
                         return "#ccc"
                     } 
                     return "#ddd"
@@ -90,10 +88,10 @@ export function Path() {
                         return "#00B825"
                     } else if (d.isEnd) {
                         return "#860018"
-                    } else if(d.distance !== -1 && !d.isPath) {
+                    }  else if(d.isFocused) {
+                        return "#555"
+                    } else if(d.wasVisited && maxDistance !== 0) {
                         return "#000"
-                    } else if(d.isFocused) {
-                        return "#ccc"
                     }
                     return "#ddd"
                 })

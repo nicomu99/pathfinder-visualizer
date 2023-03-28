@@ -41,7 +41,7 @@ export const mapSlice = createSlice({
         choosingMode: 'wall',
         startIndex: '',
         endIndex: '',
-        maxDistance: 0
+        maxDistance: 0,
     },
     reducers: {
         // Toggles a tiles function, meaning if it is a path, wall, end or simply nothing
@@ -125,7 +125,7 @@ export const mapSlice = createSlice({
             state.tiles[action.payload].isFocused = !state.tiles[action.payload].isFocused
         },
         toggleWasVisited: (state, action) => {
-            state.tiles[action.payload].wasVisited = true
+            state.tiles[action.payload].wasVisited = !state.tiles[action.payload].wasVisited
         },
         updateDistance: (state, action) => {
             state.tiles[action.payload.id].distance = action.payload.newDistance
