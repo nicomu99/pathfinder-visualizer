@@ -1,22 +1,25 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+let tilesPerRow = 40
+let tileCount = 800
+
 // Initializes the tileMap
 let tileMap = []
-for (let i = 0; i < 800; i++) {
+for (let i = 0; i < tileCount; i++) {
 
     // Calculate neighbors
     let neighbors = []
-    if (i % 40 !== 0) {
+    if (i % tilesPerRow !== 0) {
         neighbors.push(i - 1)
     }
-    if (i % 10 !== 39) {
+    if ((i + 1) % tilesPerRow !== 0) {
         neighbors.push(i + 1)
     }
-    if (i < 760) {
-        neighbors.push(i + 40)
+    if (i < (tileCount - tilesPerRow)) {
+        neighbors.push(i + tilesPerRow)
     }
-    if (i > 39) {
-        neighbors.push(i - 40)
+    if (i > (tilesPerRow - 1)) {
+        neighbors.push(i - tilesPerRow)
     }
 
     // Initialize the tile
@@ -42,6 +45,8 @@ export const mapSlice = createSlice({
         startIndex: '',
         endIndex: '',
         maxDistance: 0,
+        tilesPerRow: tilesPerRow,
+        tileCount: tileCount
     },
     reducers: {
         // Toggles a tiles function, meaning if it is a path, wall, end or simply nothing
@@ -151,5 +156,6 @@ export const selectMap = (state) => state.map.tiles
 export const selectStartIndex = (state) => state.map.startIndex
 export const selectEndIndex = (state) => state.map.endIndex
 export const selectMaxDistance = (state) => state.map.maxDistance
-
+export const selectTilesPerRow = (state) => state.map.tilesPerRow
+export const selectTileCount = (state) => state.map.tileCount
 export default mapSlice.reducer

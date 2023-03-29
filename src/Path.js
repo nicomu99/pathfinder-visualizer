@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import {
     selectMap,
     selectMaxDistance,
-    toggleTileFunction
+    toggleTileFunction,
+    selectTilesPerRow
 } from './redux/mapSlice'
 import * as d3 from 'd3'
 import styles from './style/Path.module.css'
@@ -11,12 +12,12 @@ import styles from './style/Path.module.css'
 export function Path() {
     const map = useSelector(selectMap)
     const maxDistance = useSelector(selectMaxDistance)
+    const tilesPerRow = useSelector(selectTilesPerRow)
     const dispatch = useDispatch()
 
     useEffect(() => {
 
         // Calculate the width of the canvas
-        const tilesPerRow = 40
         const tileSize = 15 
         const tilePadding = 3
         const width = tilesPerRow * (tileSize + tilePadding) - tilePadding

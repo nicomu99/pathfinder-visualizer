@@ -1,18 +1,10 @@
-import { current } from '@reduxjs/toolkit'
 import {
     togglePath,
-    updateDistance,
     toggleIsFocused,
-    toggleIsOut,
     setMaxDistance,
     toggleWasVisited
 } from '../redux/mapSlice'
 import store from '../redux/store'
-
-// Updates the distance values in the store
-function updateDistanceValue(elementId, alternativeWay) {
-    store.dispatch(updateDistance({ id: elementId, newDistance: alternativeWay }))
-}
 
 // Toggles the focus state of a tile in the store
 function focusTile(elementId) {
@@ -142,7 +134,6 @@ async function visualizeFocusOrdering(focusOrdering, distance) {
 
     let max = Math.max(...distance)
 
-    await untoggleVisited(focusOrdering)
     store.dispatch(setMaxDistance(max))
 
     for (let i = 0; i < focusOrdering.length; i++) {
@@ -164,6 +155,7 @@ async function runAlgorithm() {
     let dijkstra = await dijsktraAlgorithm(map, startIndex, endIndex)
     let shortestPath = generatePath(dijkstra.predecessor, endIndex)
 
+    await untoggleVisited(dijkstra.focusOrdering)
     await visualizeFocusOrdering(dijkstra.focusOrdering, dijkstra.distance)
 
     updatePath(shortestPath)
