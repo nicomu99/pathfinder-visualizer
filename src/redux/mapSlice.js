@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 let tilesPerRow = 40
-let tileCount = tilesPerRow * 15
+let tileCount = tilesPerRow * 20
 
 // Initializes the tileMap
 let tileMap = []

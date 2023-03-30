@@ -30,8 +30,8 @@ export function Path() {
     const dispatch = useDispatch()
     const xOffset = useRef(0)
     const yOffset = useRef(0)
-    const tileSize = 30
-    const tilePadding = 3
+    const tileSize = 18
+    const tilePadding = 2
 
     useEffect(() => {
         // Calculate width and height of the canvas using the number of rows
