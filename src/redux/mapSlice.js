@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-let tilesPerRow = 15
+let tilesPerRow = 40
 let tileCount = tilesPerRow * 15
 
 // Initializes the tileMap
@@ -24,10 +24,8 @@ for (let i = 0; i < tileCount; i++) {
 
     // Initialize the tile
     tileMap.push({
-        isWall: false,
+        mode: 'nothing',
         isPath: false,
-        isStart: false,
-        isEnd: false,
         wasVisited: false,
         neighbors: neighbors,
         id: i
@@ -48,53 +46,41 @@ export const mapSlice = createSlice({
         // Toggles a tiles function, meaning if it is a path, wall, end or simply nothing
         toggleTileFunction: (state, action) => {
             if (state.choosingMode === 'start') {
-                const tempPropValue = !state.tiles[action.payload].isStart
-
                 // If a start already exists and a new start is set, we have to change it first
                 state.tiles = state.tiles.map((d) => {
                     if (d.isStart) {
                         return {
                             ...d,
-                            isStart: false
+                            mode: 'nothing'
                         }
                     }
                     return d
                 })
-
-                // Toggle everything to off before changing the tile, so no collisions can happen
-                state.tiles[action.payload].isEnd = false
-                state.tiles[action.payload].isWall = false
-
-                // Finally, toggle the right property
-                state.tiles[action.payload].isStart = tempPropValue
                 state.startIndex = action.payload
             } else if (state.choosingMode === 'end') {
-                const tempPropValue = !state.tiles[action.payload].isEnd
-
                 // Same goes for end
                 state.tiles = state.tiles.map((d, i) => {
                     if (d.isEnd) {
                         return {
                             ...d,
-                            isEnd: false
+                            mode: 'nothing'
                         }
                     }
                     return d
                 })
 
-                // Toggle everything to off before changing the tile, so no collisions can happen
-                state.tiles[action.payload].isStart = false
-                state.tiles[action.payload].isWall = false
-
                 // Finally, toggle the right property
-                state.tiles[action.payload].isEnd = tempPropValue
                 state.endIndex = action.payload
             } else {
                 // Toggle everything to off before changing the tile, so no collisions can happen
-                state.tiles[action.payload].isStart = false
-                state.tiles[action.payload].isEnd = false
-                state.tiles[action.payload].isWall = !state.tiles[action.payload].isWall
+                if(action.payload === state.startIndex) {
+                    state.startIndex = ''
+                } else if(action.payload === state.endIndex) {
+                    state.endIndex = ''
+                }
             }
+
+            state.tiles[action.payload].mode = state.choosingMode
         },
         // Toggles a tiles function to if it is a path or not
         togglePath: (state, action) => {

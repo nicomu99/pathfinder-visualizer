@@ -67,13 +67,13 @@ export function Path() {
             .transition()
             .duration(200)
             .attr("fill", (d) => {
-                if (d.isWall) {
+                if (d.mode === 'wall') {
                     return "#E3B448"
                 } else if (d.isPath) {
                     return "#3A6B35"
-                } else if (d.isStart) {
+                } else if (d.mode === 'start') {
                     return "#00B825"
-                } else if (d.isEnd) {
+                } else if (d.mode === 'end') {
                     return "#860018"
                 } else if (d.wasVisited) {
                     return "#000"
