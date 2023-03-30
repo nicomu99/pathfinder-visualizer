@@ -93,14 +93,14 @@ const delay = ms => new Promise(res => setTimeout(res, ms))
 // Updates the path tiles one by one
 async function updatePath(shortestPath) {
     for (let i = 0; i < shortestPath.length; i++) {
-        await delay(100)
+        await delay(50)
         store.dispatch(togglePath(shortestPath[i]))
     }
 }
 
 async function visualizeFocusOrdering(focusOrdering) {
     for (let i = 0; i < focusOrdering.length; i++) {
-        await delay(50)
+        await delay(15)
         store.dispatch(toggleWasVisited(focusOrdering[i]))
     }
 }
