@@ -33,21 +33,13 @@ export function Visualizer() {
 	return (
 		<div className={styles.container}>
 			<div className={styles.menu}>
-				<Dropdown>
-					<Dropdown.Toggle variant="primary" id="dropdown-basic">
-						Change Algorithm
-					</Dropdown.Toggle>
-					<Dropdown.Menu>
-						<Dropdown.Item>Action</Dropdown.Item>
-					</Dropdown.Menu>
-				</Dropdown>
-				<DropdownButton id="dropdown-basic-button" title="Choose Picking Mode">
+				<DropdownButton id="dropdown-basic-button" title="Choose Picking Mode" menuVariant="dark" variant="dark">
 					<Dropdown.Item onClick={() => choosePickingMode('wall')}>Wall</Dropdown.Item>
 					<Dropdown.Item onClick={() => choosePickingMode('start')}>Start</Dropdown.Item>
 					<Dropdown.Item onClick={() => choosePickingMode('end')}>End</Dropdown.Item>
 				</DropdownButton>
-				<Button variant="primary" onClick={() => runAlgorithm()}>Run Algorithm</Button>
-				<Button variant="primary" onClick={() => clearMap()}>Clear Map</Button>
+				<Button variant="dark" onClick={() => runAlgorithm()}>Run Algorithm</Button>
+				<Button variant="dark" onClick={() => clearMap()}>Clear Map</Button>
 			</div>
 			<Path />
 		</div>

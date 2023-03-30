@@ -19,7 +19,7 @@ const getTileColor = (tile) => {
     } else if (tile.mode === 'end') {
         return "#860018"
     } else if (tile.wasVisited) {
-        return "#000"
+        return "#3A3A3A"
     }
     return "#ddd"
 }
