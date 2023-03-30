@@ -97,12 +97,8 @@ export const mapSlice = createSlice({
             state.tiles = state.tiles.slice()
             state.tiles.forEach((ele) => {
                 ele.isPath = false
-                ele.isWall = false
-                ele.isEnd = false
-                ele.isStart = false
-                ele.isFocused = false
+                ele.mode = 'nothing'
                 ele.wasVisited = false
-                ele.distance = -1
             })
 
             state.startIndex = ''
