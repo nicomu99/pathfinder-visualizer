@@ -6,23 +6,19 @@ import {
 } from '../redux/mapSlice'
 import store from '../redux/store'
 
-// Toggles the focus state of a tile in the store
-function focusTile(elementId) {
-    store.dispatch(toggleIsFocused(elementId))
-}
-
 // An implementation of the dijkstra pathfinding algorithm
 async function dijsktraAlgorithm(map, startIndex, endIndex) {
 
     if (startIndex === '' || endIndex === '') {
-        // Need to have an ending an a start for this to work
+        // Need to have an ending and a start for this to work
         return
     }
 
     // Initialize helper arrays
     let focusOrdering = []
-    let distance = Array(map.length).fill(Infinity)
+    let wasVisited = []
     let predecessor = Array(map.length).fill(null)
+    let distance = Array(map.length).fill(Infinity)
     distance[startIndex] = 0
 
     // We are not deleting tiles, so we need a different measure of when everything has been visited
@@ -36,8 +32,8 @@ async function dijsktraAlgorithm(map, startIndex, endIndex) {
         let smallestIndex = -1
         let smallestValue = Infinity
         map.forEach(element => {
-            if (!element.wasVisited && !element.isWall) {
-                let index = element.id
+            let index = element.id
+            if (!wasVisited.includes(index) && !element.isWall) {
                 if (distance[index] < smallestValue) {
                     smallestValue = distance[index]
                     smallestIndex = index
@@ -47,19 +43,16 @@ async function dijsktraAlgorithm(map, startIndex, endIndex) {
 
         // Get the current element
         var currentTile = map[smallestIndex]
-
         if(currentTile === undefined) {
+            // For debugging purposes
             console.log(map)
+            break
         }
 
-        //console.log("Current tile:" + currentTile)
-        //console.log("Smallest index:" + smallestIndex)
-
-        focusOrdering.push(currentTile.id)
-
         // Mark the tile visited and update the map
-        store.dispatch(toggleWasVisited(currentTile.id))
         map = store.getState().map.tiles
+        focusOrdering.push(currentTile.id)
+        wasVisited.push(currentTile.id)
 
         // The following line disables a warning
         // eslint-disable-next-line
@@ -111,35 +104,23 @@ const delay = ms => new Promise(res => setTimeout(res, ms))
 // Updates the path tiles one by one
 async function updatePath(shortestPath) {
     for (let i = 0; i < shortestPath.length; i++) {
-        await delay(50)
+        await delay(100)
         store.dispatch(togglePath(shortestPath[i]))
     }
 }
 
-async function untoggleVisited(focusOrdering) {
-    for (let i = 0; i < focusOrdering.length; i++) {
-        store.dispatch(toggleWasVisited(focusOrdering[i]))
-    }
-}
-
-
 async function visualizeFocusOrdering(focusOrdering, distance) {
-
-    distance = distance.map(d => {
+    /*distance = distance.map(d => {
         if (d === Infinity) {
             return -1
         }
         return d
     })
-
     let max = Math.max(...distance)
-
-    store.dispatch(setMaxDistance(max))
+    store.dispatch(setMaxDistance(max))*/
 
     for (let i = 0; i < focusOrdering.length; i++) {
-        focusTile(focusOrdering[i])
-        await delay(10)
-        focusTile(focusOrdering[i])
+        await delay(50)
         store.dispatch(toggleWasVisited(focusOrdering[i]))
     }
 
@@ -154,8 +135,12 @@ async function runAlgorithm() {
 
     let dijkstra = await dijsktraAlgorithm(map, startIndex, endIndex)
     let shortestPath = generatePath(dijkstra.predecessor, endIndex)
+    
+    if(shortestPath.length === 1) {
+        // No path found
+        return
+    }
 
-    await untoggleVisited(dijkstra.focusOrdering)
     await visualizeFocusOrdering(dijkstra.focusOrdering, dijkstra.distance)
 
     updatePath(shortestPath)

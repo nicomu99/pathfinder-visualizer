@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-let tilesPerRow = 40
-let tileCount = 600
+let tilesPerRow = 15
+let tileCount = tilesPerRow * 15
 
 // Initializes the tileMap
 let tileMap = []
@@ -28,7 +28,6 @@ for (let i = 0; i < tileCount; i++) {
         isPath: false,
         isStart: false,
         isEnd: false,
-        isFocused: false,
         wasVisited: false,
         neighbors: neighbors,
         id: i
@@ -131,12 +130,6 @@ export const mapSlice = createSlice({
 
             return state
         },
-        toggleIsFocused: (state, action) => {
-            state.tiles = state.tiles.slice()
-            state.tiles[action.payload].isFocused = !state.tiles[action.payload].isFocused
-
-            return state
-        },
         toggleWasVisited: (state, action) => {
             state.tiles = state.tiles.slice()
             state.tiles[action.payload].wasVisited = !state.tiles[action.payload].wasVisited
@@ -157,7 +150,6 @@ export const { toggleTileFunction,
     clearWholeMap,
     toggleRerenderOff,
     updateDistance,
-    toggleIsFocused,
     setMaxDistance,
     toggleWasVisited
 } = mapSlice.actions

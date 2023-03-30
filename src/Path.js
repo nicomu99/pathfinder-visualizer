@@ -66,7 +66,7 @@ export function Path() {
         d3.selectAll("rect")
             .data(map)
             .transition()
-            .duration(100)
+            .duration(200)
             .attr("fill", (d) => {
                 if (d.isWall) {
                     return "#E3B448"
@@ -76,9 +76,7 @@ export function Path() {
                     return "#00B825"
                 } else if (d.isEnd) {
                     return "#860018"
-                } else if (d.isFocused) {
-                    return "#555"
-                } else if (d.wasVisited && maxDistance !== 0) {
+                } else if (d.wasVisited) {
                     return "#000"
                 }
                 return "#ddd"
