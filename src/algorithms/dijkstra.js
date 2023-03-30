@@ -13,18 +13,12 @@ async function dijsktraAlgorithm(map, startIndex, endIndex) {
     }
 
     // Initialize helper arrays
-    let focusOrdering = []
     let wasVisited = []
     let predecessor = Array(map.length).fill(null)
     let distance = Array(map.length).fill(Infinity)
     distance[startIndex] = 0
 
-    // We are not deleting tiles, so we need a different measure of when everything has been visited
-    let count = 0
-
-    while (count < map.length) {
-
-        count++
+    while (true) {
 
         // Find vertex with smallest value in distance
         let smallestIndex = -1
@@ -42,14 +36,11 @@ async function dijsktraAlgorithm(map, startIndex, endIndex) {
         // Get the current element
         var currentTile = map[smallestIndex]
         if(currentTile === undefined) {
-            // For debugging purposes
-            console.log(map)
+            // No path found
             break
         }
 
         // Mark the tile visited and update the map
-        map = store.getState().map.tiles
-        focusOrdering.push(currentTile.id)
         wasVisited.push(currentTile.id)
 
         // The following line disables a warning
@@ -79,7 +70,7 @@ async function dijsktraAlgorithm(map, startIndex, endIndex) {
     return {
         predecessor: predecessor,
         distance: distance,
-        focusOrdering
+        wasVisited: wasVisited
     }
 }
 
@@ -129,7 +120,7 @@ async function runAlgorithm() {
         return
     }
 
-    await visualizeFocusOrdering(dijkstra.focusOrdering, dijkstra.distance)
+    await visualizeFocusOrdering(dijkstra.wasVisited, dijkstra.distance)
 
     updatePath(shortestPath)
 }
