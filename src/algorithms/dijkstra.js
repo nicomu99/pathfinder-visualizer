@@ -1,7 +1,5 @@
 import {
     togglePath,
-    toggleIsFocused,
-    setMaxDistance,
     toggleWasVisited
 } from '../redux/mapSlice'
 import store from '../redux/store'
@@ -109,21 +107,11 @@ async function updatePath(shortestPath) {
     }
 }
 
-async function visualizeFocusOrdering(focusOrdering, distance) {
-    /*distance = distance.map(d => {
-        if (d === Infinity) {
-            return -1
-        }
-        return d
-    })
-    let max = Math.max(...distance)
-    store.dispatch(setMaxDistance(max))*/
-
+async function visualizeFocusOrdering(focusOrdering) {
     for (let i = 0; i < focusOrdering.length; i++) {
         await delay(50)
         store.dispatch(toggleWasVisited(focusOrdering[i]))
     }
-
 }
 
 // Runs all required steps to generate the path and update the tiles color's

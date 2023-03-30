@@ -41,7 +41,6 @@ export const mapSlice = createSlice({
         choosingMode: 'wall',
         startIndex: '',
         endIndex: '',
-        maxDistance: 0,
         tilesPerRow: tilesPerRow,
         tileCount: tileCount,
     },
@@ -135,11 +134,6 @@ export const mapSlice = createSlice({
             state.tiles[action.payload].wasVisited = !state.tiles[action.payload].wasVisited
 
             return state
-        },
-        setMaxDistance: (state, action) => {
-            state.maxDistance = action.payload
-
-            return state
         }
     }
 })
@@ -150,14 +144,13 @@ export const { toggleTileFunction,
     clearWholeMap,
     toggleRerenderOff,
     updateDistance,
-    setMaxDistance,
     toggleWasVisited
 } = mapSlice.actions
 
 export const selectMap = (state) => state.map.tiles
 export const selectStartIndex = (state) => state.map.startIndex
 export const selectEndIndex = (state) => state.map.endIndex
-export const selectMaxDistance = (state) => state.map.maxDistance
 export const selectTilesPerRow = (state) => state.map.tilesPerRow
 export const selectTileCount = (state) => state.map.tileCount
+
 export default mapSlice.reducer

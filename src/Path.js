@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
     selectMap,
-    selectMaxDistance,
     toggleTileFunction,
     selectTilesPerRow
 } from './redux/mapSlice'
@@ -11,7 +10,6 @@ import styles from './style/Path.module.css'
 
 export function Path() {
     const map = useSelector(selectMap)
-    const maxDistance = useSelector(selectMaxDistance)
     const tilesPerRow = useSelector(selectTilesPerRow)
     const dispatch = useDispatch()
 
@@ -58,6 +56,7 @@ export function Path() {
             .on("click", function (e, d) {
                 dispatch(toggleTileFunction(d.id))
             })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     // Rerenders the component when the map changes
