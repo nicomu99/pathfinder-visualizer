@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 let tilesPerRow = 40
-let tileCount = 800
+let tileCount = 600
 
 // Initializes the tileMap
 let tileMap = []
@@ -28,11 +28,9 @@ for (let i = 0; i < tileCount; i++) {
         isPath: false,
         isStart: false,
         isEnd: false,
-        triggerRerender: true,
         isFocused: false,
         wasVisited: false,
         neighbors: neighbors,
-        distance: -1,
         id: i
     })
 }
@@ -46,7 +44,7 @@ export const mapSlice = createSlice({
         endIndex: '',
         maxDistance: 0,
         tilesPerRow: tilesPerRow,
-        tileCount: tileCount
+        tileCount: tileCount,
     },
     reducers: {
         // Toggles a tiles function, meaning if it is a path, wall, end or simply nothing
@@ -102,14 +100,22 @@ export const mapSlice = createSlice({
         },
         // Toggles a tiles function to if it is a path or not
         togglePath: (state, action) => {
+            state.tiles = state.tiles.slice()
             state.tiles[action.payload].isPath = true
+
+            return state
         },
         // Changes the input a users selection of a tile causes
         changePickingMode: (state, action) => {
-            state.choosingMode = action.payload
+            return {
+                ...state,
+                choosingMode: action.payload
+            }
         },
         // Clears the whole map of all highlighting
         clearWholeMap: (state) => {
+
+            state.tiles = state.tiles.slice()
             state.tiles.forEach((ele) => {
                 ele.isPath = false
                 ele.isWall = false
@@ -122,21 +128,25 @@ export const mapSlice = createSlice({
 
             state.startIndex = ''
             state.endIndex = ''
-        },
-        toggleRerenderOff: (state, action) => {
-            state.tiles[action.payload].triggerRerender = false
+
+            return state
         },
         toggleIsFocused: (state, action) => {
+            state.tiles = state.tiles.slice()
             state.tiles[action.payload].isFocused = !state.tiles[action.payload].isFocused
+
+            return state
         },
         toggleWasVisited: (state, action) => {
+            state.tiles = state.tiles.slice()
             state.tiles[action.payload].wasVisited = !state.tiles[action.payload].wasVisited
-        },
-        updateDistance: (state, action) => {
-            state.tiles[action.payload.id].distance = action.payload.newDistance
+
+            return state
         },
         setMaxDistance: (state, action) => {
             state.maxDistance = action.payload
+
+            return state
         }
     }
 })
