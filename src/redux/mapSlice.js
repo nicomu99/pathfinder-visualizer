@@ -45,22 +45,12 @@ export const mapSlice = createSlice({
     reducers: {
         // Toggles a tiles function, meaning if it is a path, wall, end or simply nothing
         toggleTileFunction: (state, action) => {
-            if (state.choosingMode === 'start') {
+            state.tiles = state.tiles.slice()
+
+            if (!(state.choosingMode === 'wall')) {
                 // If a start already exists and a new start is set, we have to change it first
                 state.tiles = state.tiles.map((d) => {
-                    if (d.isStart) {
-                        return {
-                            ...d,
-                            mode: 'nothing'
-                        }
-                    }
-                    return d
-                })
-                state.startIndex = action.payload
-            } else if (state.choosingMode === 'end') {
-                // Same goes for end
-                state.tiles = state.tiles.map((d, i) => {
-                    if (d.isEnd) {
+                    if (d.mode === state.choosingMode) {
                         return {
                             ...d,
                             mode: 'nothing'
@@ -69,18 +59,23 @@ export const mapSlice = createSlice({
                     return d
                 })
 
-                // Finally, toggle the right property
-                state.endIndex = action.payload
+                if(state.choosingMode === 'start') {
+                    state.startIndex = action.payload
+                } else if (state.choosingMode === 'end') {
+                    state.endIndex = action.payload
+                }
             } else {
                 // Toggle everything to off before changing the tile, so no collisions can happen
-                if(action.payload === state.startIndex) {
+                if (action.payload === state.startIndex) {
                     state.startIndex = ''
-                } else if(action.payload === state.endIndex) {
+                } else if (action.payload === state.endIndex) {
                     state.endIndex = ''
                 }
             }
 
             state.tiles[action.payload].mode = state.choosingMode
+
+            return state
         },
         // Toggles a tiles function to if it is a path or not
         togglePath: (state, action) => {
@@ -124,12 +119,11 @@ export const mapSlice = createSlice({
     }
 })
 
-export const { toggleTileFunction,
+export const {
+    toggleTileFunction,
     togglePath,
     changePickingMode,
     clearWholeMap,
-    toggleRerenderOff,
-    updateDistance,
     toggleWasVisited
 } = mapSlice.actions
 

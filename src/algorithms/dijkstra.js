@@ -58,7 +58,7 @@ async function dijsktraAlgorithm(map, startIndex, endIndex) {
             // Update the neighbors distances and predecessors
             let neighbor = map[element]
             // let tileNotVisited = neighbor.wasVisited === false
-            let tileIsNotWall = neighbor.isWall === false
+            let tileIsNotWall = neighbor.mode !== 'wall'
 
             // Only update if the tile has not been visited before and it is not a wall
             if (tileIsNotWall) {
