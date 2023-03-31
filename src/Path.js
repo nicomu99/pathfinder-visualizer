@@ -11,8 +11,8 @@ import Tile from './Tile'
 export function Path() {
     const map = useSelector(selectMap)
     const tilesPerRow = useSelector(selectTilesPerRow)
-    const tileSize = 18
-    const tilePadding = 2
+    const tileSize = 25
+    const tilePadding = 1
 
     useEffect(() => {
         // Calculate width and height of the canvas using the number of rows

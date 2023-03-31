@@ -24,10 +24,11 @@ const getTileColor = (tile) => {
 function Tile({tile}) {
     const dispatch = useDispatch()
     const tilesPerRow = useSelector(selectTilesPerRow)
-    const tileSize = 18
-    const xOffset = (tile.id % tilesPerRow) * (tileSize + 2)
-    const yOffset = Math.floor(tile.id / tilesPerRow) * (tileSize + 2)
-    console.log("rerender")
+    const tileSize = 25
+    const tilePadding = 1
+    const xOffset = (tile.id % tilesPerRow) * (tileSize + tilePadding)
+    const yOffset = Math.floor(tile.id / tilesPerRow) * (tileSize + tilePadding)
+
     return (
         <rect
             key={tile.id}
