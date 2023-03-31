@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import Button from 'react-bootstrap/Button';
@@ -8,11 +8,13 @@ import { Path } from './Path';
 import {
 	changePickingMode,
 	clearWholeMap,
+	selectPickingMode,
 } from './redux/mapSlice'
 import { runAlgorithm } from './algorithms/dijkstra';
 
 export function Visualizer() {
 	const dispatch = useDispatch()
+	const pickingMode = useSelector(selectPickingMode)
 
 	/*
 	Dispatches the action to change the tile
@@ -30,14 +32,21 @@ export function Visualizer() {
 		dispatch(clearWholeMap())
 	}
 
+	const chooseAlgorithm = (algorithm) => {
+		runAlgorithm(algorithm)
+	}
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.menu}>
 				<h1>Pathfinding Visualizer</h1>
-				<DropdownButton id="dropdown-basic-button" title="Choose Picking Mode" menuVariant="dark" variant="dark">
+				<DropdownButton id="dropdown-basic-button" title={"Picking Mode: " + pickingMode.toUpperCase()} menuVariant="dark" variant="dark">
 					<Dropdown.Item onClick={() => choosePickingMode('wall')}>Wall</Dropdown.Item>
 					<Dropdown.Item onClick={() => choosePickingMode('start')}>Start</Dropdown.Item>
 					<Dropdown.Item onClick={() => choosePickingMode('end')}>End</Dropdown.Item>
+				</DropdownButton>
+				<DropdownButton id="dropdown-basic-button" title="Choose Algorithm" menuVariant="dark" variant="dark">
+					<Dropdown.Item onClick={() => chooseAlgorithm('dijkstra')}>Dijkstra</Dropdown.Item>
 				</DropdownButton>
 				<Button variant="dark" onClick={() => runAlgorithm()}>Run Algorithm</Button>
 				<Button variant="dark" onClick={() => clearMap()}>Clear Map</Button>

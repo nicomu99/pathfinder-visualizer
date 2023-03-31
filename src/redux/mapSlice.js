@@ -124,6 +124,7 @@ export const {
 } = mapSlice.actions
 
 export const selectMap = (state) => state.map.tiles
+export const selectPickingMode = (state) => state.map.choosingMode
 export const selectStartIndex = (state) => state.map.startIndex
 export const selectEndIndex = (state) => state.map.endIndex
 export const selectTilesPerRow = (state) => state.map.tilesPerRow
