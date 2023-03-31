@@ -33,6 +33,7 @@ export function Visualizer() {
 	return (
 		<div className={styles.container}>
 			<div className={styles.menu}>
+				<h1>Pathfinding Visualizer</h1>
 				<DropdownButton id="dropdown-basic-button" title="Choose Picking Mode" menuVariant="dark" variant="dark">
 					<Dropdown.Item onClick={() => choosePickingMode('wall')}>Wall</Dropdown.Item>
 					<Dropdown.Item onClick={() => choosePickingMode('start')}>Start</Dropdown.Item>

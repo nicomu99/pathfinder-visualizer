@@ -1,10 +1,13 @@
 .container {
     margin: 0 auto;
+    background-color: #03001C;
+    min-height: 100vh;
 }
 
 .menu {
-    margin-top: 50px;
+    padding: 20px 0;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
+    color: #fff;
 }
