@@ -45,6 +45,8 @@ export const mapSlice = createSlice({
     reducers: {
         // Toggles a tiles function, meaning if it is a path, wall, end or simply nothing
         toggleTileFunction: (state, action) => {
+            let id = action.payload.id
+            
             state.tiles = state.tiles.slice()
             if (!(state.choosingMode === 'wall')) {
                 // If a start already exists and a new start is set, we have to change it first
@@ -59,20 +61,24 @@ export const mapSlice = createSlice({
                 })
 
                 if(state.choosingMode === 'start') {
-                    state.startIndex = action.payload
+                    state.startIndex = id
                 } else if (state.choosingMode === 'end') {
-                    state.endIndex = action.payload
+                    state.endIndex = id
                 }
             } else {
                 // Toggle everything to off before changing the tile, so no collisions can happen
-                if (action.payload === state.startIndex) {
+                if (id === state.startIndex) {
                     state.startIndex = ''
-                } else if (action.payload === state.endIndex) {
+                } else if (id === state.endIndex) {
                     state.endIndex = ''
                 }
             }
 
-            state.tiles[action.payload].mode = state.choosingMode
+            if(state.choosingMode === 'wall' && action.payload.button === 'hold') {
+                state.tiles[id].mode = state.choosingMode
+            } else if (action.payload.button === 'clicked' && state.choosingMode !== 'wall') {
+                state.tiles[id].mode = state.choosingMode
+            }
             return state
         },
         // Toggles a tiles function to if it is a path or not

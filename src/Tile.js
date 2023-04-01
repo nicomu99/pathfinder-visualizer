@@ -39,7 +39,13 @@ function Tile({tile}) {
             className="tile"
             fill={getTileColor(tile)}
             style={{ transition: "fill 200ms linear" }}
-            onClick={() => dispatch(toggleTileFunction(tile.id))}
+            onMouseOver={(e) => {
+                // if the left mouse button is pressed, toggle the tile
+                if (e.buttons === 1) {
+                    dispatch(toggleTileFunction({id: tile.id, button: 'hold'}))
+                }
+            }}
+            onClick={() => dispatch(toggleTileFunction({id: tile.id, button: 'clicked'}))}
         />
     )
 }
