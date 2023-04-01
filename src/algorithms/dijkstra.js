@@ -106,12 +106,7 @@ async function visualizeFocusOrdering(focusOrdering) {
 }
 
 // Runs all required steps to generate the path and update the tiles color's
-async function runAlgorithm() {
-
-    let map = store.getState().map.tiles
-    let startIndex = store.getState().map.startIndex
-    let endIndex = store.getState().map.endIndex
-
+async function runDijkstra(map, startIndex, endIndex) {
     let dijkstra = await dijsktraAlgorithm(map, startIndex, endIndex)
     let shortestPath = generatePath(dijkstra.predecessor, endIndex)
     
@@ -125,4 +120,4 @@ async function runAlgorithm() {
     updatePath(shortestPath)
 }
 
-export { runAlgorithm }
+export { runDijkstra }

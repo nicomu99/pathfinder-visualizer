@@ -10,11 +10,12 @@ import {
 	clearWholeMap,
 	selectPickingMode,
 } from './redux/mapSlice'
-import { runAlgorithm } from './algorithms/dijkstra';
+import { runAlgorithm } from './algorithms/algorithmManager';
 
 export function Visualizer() {
 	const dispatch = useDispatch()
 	const pickingMode = useSelector(selectPickingMode)
+	const [algorithm, setAlgorithm] = React.useState('dijkstra')
 
 	/*
 	Dispatches the action to change the tile
@@ -32,7 +33,11 @@ export function Visualizer() {
 		dispatch(clearWholeMap())
 	}
 
-	const chooseAlgorithm = (algorithm) => {
+	const chooseAlgorithm = (newAlgorithm) => {
+		setAlgorithm(newAlgorithm)
+	}
+
+	const runVisualization = () => {
 		runAlgorithm(algorithm)
 	}
 
@@ -48,7 +53,7 @@ export function Visualizer() {
 				<DropdownButton id="dropdown-basic-button" title="Choose Algorithm" menuVariant="dark" variant="dark">
 					<Dropdown.Item onClick={() => chooseAlgorithm('dijkstra')}>Dijkstra</Dropdown.Item>
 				</DropdownButton>
-				<Button variant="dark" onClick={() => runAlgorithm()}>Run Algorithm</Button>
+				<Button variant="dark" onClick={() => runVisualization()}>Run Algorithm</Button>
 				<Button variant="dark" onClick={() => clearMap()}>Clear Map</Button>
 			</div>
 			<Path />
