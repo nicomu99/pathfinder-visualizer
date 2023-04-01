@@ -46,7 +46,6 @@ export const mapSlice = createSlice({
         // Toggles a tiles function, meaning if it is a path, wall, end or simply nothing
         toggleTileFunction: (state, action) => {
             state.tiles = state.tiles.slice()
-
             if (!(state.choosingMode === 'wall')) {
                 // If a start already exists and a new start is set, we have to change it first
                 state.tiles = state.tiles.map((d) => {
@@ -74,7 +73,6 @@ export const mapSlice = createSlice({
             }
 
             state.tiles[action.payload].mode = state.choosingMode
-
             return state
         },
         // Toggles a tiles function to if it is a path or not
@@ -93,7 +91,6 @@ export const mapSlice = createSlice({
         },
         // Clears the whole map of all highlighting
         clearWholeMap: (state) => {
-
             state.tiles = state.tiles.slice()
             state.tiles.forEach((ele) => {
                 ele.isPath = false

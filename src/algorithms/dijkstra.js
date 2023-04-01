@@ -1,17 +1,5 @@
-import {
-    togglePath,
-    toggleWasVisited
-} from '../redux/mapSlice'
-import store from '../redux/store'
-
 // An implementation of the dijkstra pathfinding algorithm
 async function dijsktraAlgorithm(map, startIndex, endIndex) {
-
-    if (startIndex === '' || endIndex === '') {
-        // Need to have an ending and a start for this to work
-        return
-    }
-
     // Initialize helper arrays
     let wasVisited = []
     let predecessor = Array(map.length).fill(null)
@@ -19,7 +7,6 @@ async function dijsktraAlgorithm(map, startIndex, endIndex) {
     distance[startIndex] = 0
 
     while (true) {
-
         // Find vertex with smallest value in distance
         let smallestIndex = -1
         let smallestValue = Infinity
@@ -34,25 +21,17 @@ async function dijsktraAlgorithm(map, startIndex, endIndex) {
         })
 
         // Get the current element
-        var currentTile = map[smallestIndex]
-        if(currentTile === undefined) {
+        let currentTile = map[smallestIndex]
+        if (currentTile === undefined) {
             // No path found
             break
         }
-
-        // Mark the tile visited and update the map
         wasVisited.push(currentTile.id)
 
-        // The following line disables a warning
-        // eslint-disable-next-line
+        // Update the neighbors distances and predecessors
         currentTile.neighbors.forEach(element => {
-            // Update the neighbors distances and predecessors
-            let neighbor = map[element]
-            // let tileNotVisited = neighbor.wasVisited === false
-            let tileIsNotWall = neighbor.mode !== 'wall'
-
-            // Only update if the tile has not been visited before and it is not a wall
-            if (tileIsNotWall) {
+            if (map[element].mode !== 'wall') {
+                // Only update if the tile is not a wall
                 let alternativeWay = distance[currentTile.id] + 1
                 if (alternativeWay < distance[element]) {
                     distance[element] = alternativeWay
@@ -69,7 +48,6 @@ async function dijsktraAlgorithm(map, startIndex, endIndex) {
 
     return {
         predecessor: predecessor,
-        distance: distance,
         wasVisited: wasVisited
     }
 }
@@ -87,37 +65,20 @@ function generatePath(predecessors, endIndex) {
     return path
 }
 
-// Create a delay so the path is updated incrementally
-const delay = ms => new Promise(res => setTimeout(res, ms))
-
-// Updates the path tiles one by one
-async function updatePath(shortestPath) {
-    for (let i = 0; i < shortestPath.length; i++) {
-        await delay(50)
-        store.dispatch(togglePath(shortestPath[i]))
-    }
-}
-
-async function visualizeFocusOrdering(focusOrdering) {
-    for (let i = 0; i < focusOrdering.length; i++) {
-        await delay(10)
-        store.dispatch(toggleWasVisited(focusOrdering[i]))
-    }
-}
-
 // Runs all required steps to generate the path and update the tiles color's
 async function runDijkstra(map, startIndex, endIndex) {
     let dijkstra = await dijsktraAlgorithm(map, startIndex, endIndex)
     let shortestPath = generatePath(dijkstra.predecessor, endIndex)
-    
-    if(shortestPath.length === 1) {
+
+    if (shortestPath.length === 1) {
         // No path found
         return
     }
 
-    await visualizeFocusOrdering(dijkstra.wasVisited, dijkstra.distance)
-
-    updatePath(shortestPath)
+    return {
+        shortestPath: shortestPath,
+        wasVisited: dijkstra.wasVisited,
+    }
 }
 
 export { runDijkstra }

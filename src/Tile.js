@@ -16,10 +16,9 @@ const getTileColor = (tile) => {
     } else if (tile.mode === 'end') {
         return "#860018"
     } else if (tile.wasVisited) {
-        // semi dark gray
         return "#494949"
     }
-    return "#F2F2F2"
+    return "#FFFFFF"
 }
 
 function Tile({tile}) {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
@@ -15,7 +15,7 @@ import { runAlgorithm } from './algorithms/algorithmManager';
 export function Visualizer() {
 	const dispatch = useDispatch()
 	const pickingMode = useSelector(selectPickingMode)
-	const [algorithm, setAlgorithm] = React.useState('dijkstra')
+	const [algorithm, setAlgorithm] = useState('dijkstra')
 
 	/*
 	Dispatches the action to change the tile
@@ -33,10 +33,16 @@ export function Visualizer() {
 		dispatch(clearWholeMap())
 	}
 
+	/*
+	Changes the algorithm to the one selected
+	*/
 	const chooseAlgorithm = (newAlgorithm) => {
 		setAlgorithm(newAlgorithm)
 	}
 
+	/*
+	Runs the algorithm selected
+	*/
 	const runVisualization = () => {
 		runAlgorithm(algorithm)
 	}
