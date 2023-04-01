@@ -8,6 +8,7 @@ import { Path } from './Path';
 import {
 	changePickingMode,
 	clearWholeMap,
+	selectAnimationSpeed,
 	selectPickingMode,
 	setAnimationSpeed
 } from './redux/mapSlice'
@@ -16,6 +17,7 @@ import { runAlgorithm } from './algorithms/algorithmManager';
 export function Visualizer() {
 	const dispatch = useDispatch()
 	const pickingMode = useSelector(selectPickingMode)
+	const animationSpeed = useSelector(selectAnimationSpeed)
 	const [algorithm, setAlgorithm] = useState('dijkstra')
 
 	/*
@@ -78,6 +80,7 @@ export function Visualizer() {
 			</div>
 			<div className={styles.heading}>
 				<h5>Picking Mode: {pickingMode.charAt(0).toUpperCase() + pickingMode.slice(1)}</h5>
+				<h5>Algorithm: {algorithm.charAt(0).toUpperCase() + algorithm.slice(1)}</h5>
 			</div>
 			<Path />
 		</div>
