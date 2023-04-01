@@ -41,12 +41,13 @@ export const mapSlice = createSlice({
         endIndex: '',
         tilesPerRow: tilesPerRow,
         tileCount: tileCount,
+        animationSpeed: 10
     },
     reducers: {
         // Toggles a tiles function, meaning if it is a path, wall, end or simply nothing
         toggleTileFunction: (state, action) => {
             let id = action.payload.id
-            
+
             state.tiles = state.tiles.slice()
             if (!(state.choosingMode === 'wall')) {
                 // If a start already exists and a new start is set, we have to change it first
@@ -114,6 +115,9 @@ export const mapSlice = createSlice({
             state.tiles[action.payload].wasVisited = !state.tiles[action.payload].wasVisited
 
             return state
+        },
+        setAnimationSpeed(state, action) {
+            state.animationSpeed = action.payload
         }
     }
 })
@@ -123,7 +127,8 @@ export const {
     togglePath,
     changePickingMode,
     clearWholeMap,
-    toggleWasVisited
+    toggleWasVisited,
+    setAnimationSpeed
 } = mapSlice.actions
 
 export const selectMap = (state) => state.map.tiles
@@ -132,5 +137,6 @@ export const selectStartIndex = (state) => state.map.startIndex
 export const selectEndIndex = (state) => state.map.endIndex
 export const selectTilesPerRow = (state) => state.map.tilesPerRow
 export const selectTileCount = (state) => state.map.tileCount
+export const selectAnimationSpeed = (state) => state.map.animationSpeed
 
 export default mapSlice.reducer

@@ -9,6 +9,7 @@ import {
 	changePickingMode,
 	clearWholeMap,
 	selectPickingMode,
+	setAnimationSpeed
 } from './redux/mapSlice'
 import { runAlgorithm } from './algorithms/algorithmManager';
 
@@ -47,6 +48,14 @@ export function Visualizer() {
 		runAlgorithm(algorithm)
 	}
 
+	/*
+	Changes the animation speed of the algorithm
+	*/
+	const changeAnimationSpeed = (newSpeed) => {
+		dispatch(setAnimationSpeed(newSpeed))
+	}
+
+
 	return (
 		<div className={styles.container}>
 			<div className={styles.menu}>
@@ -61,6 +70,11 @@ export function Visualizer() {
 				</DropdownButton>
 				<Button variant="dark" onClick={() => runVisualization()}>Run Algorithm</Button>
 				<Button variant="dark" onClick={() => clearMap()}>Clear Map</Button>
+				<DropdownButton id="dropdown-basic-button" title="Animation Speed" menuVariant="dark" variant="dark">
+					<Dropdown.Item onClick={() => changeAnimationSpeed(20)}>Slow</Dropdown.Item>
+					<Dropdown.Item onClick={() => changeAnimationSpeed(10)}>Medium</Dropdown.Item>
+					<Dropdown.Item onClick={() => changeAnimationSpeed(5)}>Fast</Dropdown.Item>
+				</DropdownButton>
 			</div>
 			<Path />
 		</div>
