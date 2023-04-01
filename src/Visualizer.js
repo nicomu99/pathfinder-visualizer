@@ -60,7 +60,7 @@ export function Visualizer() {
 		<div className={styles.container}>
 			<div className={styles.menu}>
 				<h1>Pathfinding Visualizer</h1>
-				<DropdownButton id="dropdown-basic-button" title={"Picking Mode: " + pickingMode.toUpperCase()} menuVariant="dark" variant="dark">
+				<DropdownButton id="dropdown-basic-button" title={"Choose Picking Mode"} menuVariant="dark" variant="dark">
 					<Dropdown.Item onClick={() => choosePickingMode('wall')}>Wall</Dropdown.Item>
 					<Dropdown.Item onClick={() => choosePickingMode('start')}>Start</Dropdown.Item>
 					<Dropdown.Item onClick={() => choosePickingMode('end')}>End</Dropdown.Item>
@@ -75,6 +75,9 @@ export function Visualizer() {
 					<Dropdown.Item onClick={() => changeAnimationSpeed(10)}>Medium</Dropdown.Item>
 					<Dropdown.Item onClick={() => changeAnimationSpeed(5)}>Fast</Dropdown.Item>
 				</DropdownButton>
+			</div>
+			<div className={styles.heading}>
+				<h5>Picking Mode: {pickingMode.charAt(0).toUpperCase() + pickingMode.slice(1)}</h5>
 			</div>
 			<Path />
 		</div>

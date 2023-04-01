@@ -28,7 +28,7 @@ function Tile({tile}) {
     const tilePadding = 1
     const xOffset = (tile.id % tilesPerRow) * (tileSize + tilePadding)
     const yOffset = Math.floor(tile.id / tilesPerRow) * (tileSize + tilePadding)
-    
+
     return (
         <rect
             key={tile.id}
