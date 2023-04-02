@@ -69,6 +69,7 @@ export function Visualizer() {
 				</DropdownButton>
 				<DropdownButton id="dropdown-basic-button" title="Choose Algorithm" menuVariant="dark" variant="dark">
 					<Dropdown.Item onClick={() => chooseAlgorithm('dijkstra')}>Dijkstra</Dropdown.Item>
+					<Dropdown.Item onClick={() => chooseAlgorithm('aStar')}>A*</Dropdown.Item>
 				</DropdownButton>
 				<Button variant="dark" onClick={() => runVisualization()}>Run Algorithm</Button>
 				<Button variant="dark" onClick={() => clearMap()}>Clear Map</Button>

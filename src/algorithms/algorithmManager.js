@@ -1,4 +1,5 @@
 import { runDijkstra } from './dijkstra'
+import { runAStar } from './aStar'
 import { togglePath, toggleWasVisited } from '../redux/mapSlice'
 import store from '../redux/store'
 
@@ -35,6 +36,9 @@ async function runAlgorithm(algorithm) {
     switch (algorithm) {
         case 'dijkstra':
             algorithmPath = await runDijkstra(map, startIndex, endIndex)
+            break
+        case 'aStar':
+            algorithmPath = await runAStar(map, startIndex, endIndex)
             break
         default:
             break
