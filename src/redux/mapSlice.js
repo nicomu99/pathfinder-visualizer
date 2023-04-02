@@ -110,6 +110,15 @@ export const mapSlice = createSlice({
 
             return state
         },
+        clearPath: (state) => {
+            state.tiles = state.tiles.slice()
+            state.tiles.forEach((ele) => {
+                ele.isPath = false
+                ele.wasVisited = false
+            })
+
+            return state
+        },
         toggleWasVisited: (state, action) => {
             state.tiles = state.tiles.slice()
             state.tiles[action.payload].wasVisited = !state.tiles[action.payload].wasVisited
@@ -128,7 +137,8 @@ export const {
     changePickingMode,
     clearWholeMap,
     toggleWasVisited,
-    setAnimationSpeed
+    setAnimationSpeed,
+    clearPath
 } = mapSlice.actions
 
 export const selectMap = (state) => state.map.tiles

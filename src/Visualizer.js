@@ -8,6 +8,7 @@ import { Path } from './Path';
 import {
 	changePickingMode,
 	clearWholeMap,
+	clearPath,
 	selectAnimationSpeed,
 	selectPickingMode,
 	setAnimationSpeed
@@ -34,6 +35,10 @@ export function Visualizer() {
 	*/
 	function clearMap() {
 		dispatch(clearWholeMap())
+	}
+
+	function clearPathFocusing() {
+		dispatch(clearPath())
 	}
 
 	/*
@@ -72,7 +77,10 @@ export function Visualizer() {
 					<Dropdown.Item onClick={() => chooseAlgorithm('aStar')}>A*</Dropdown.Item>
 				</DropdownButton>
 				<Button variant="dark" onClick={() => runVisualization()}>Run Algorithm</Button>
-				<Button variant="dark" onClick={() => clearMap()}>Clear Map</Button>
+				<DropdownButton id="dropdown-basic-button" title="Reset Map" menuVariant="dark" variant="dark">
+					<Dropdown.Item onClick={() => clearMap()}>Clear Map</Dropdown.Item>
+					<Dropdown.Item onClick={() => clearPathFocusing()}>Clear Path</Dropdown.Item>
+				</DropdownButton>
 				<DropdownButton id="dropdown-basic-button" title="Animation Speed" menuVariant="dark" variant="dark">
 					<Dropdown.Item onClick={() => changeAnimationSpeed(20)}>Slow</Dropdown.Item>
 					<Dropdown.Item onClick={() => changeAnimationSpeed(10)}>Medium</Dropdown.Item>
