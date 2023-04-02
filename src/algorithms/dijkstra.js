@@ -28,6 +28,11 @@ async function dijsktraAlgorithm(map, startIndex, endIndex) {
         }
         wasVisited.push(currentTile.id)
 
+        // Check if we already found end tile
+        if (currentTile.id === endIndex) {
+            break
+        }
+
         // Update the neighbors distances and predecessors
         currentTile.neighbors.forEach(element => {
             if (map[element].mode !== 'wall') {
@@ -40,10 +45,6 @@ async function dijsktraAlgorithm(map, startIndex, endIndex) {
             }
         })
 
-        // Check if we already found end tile
-        if (currentTile.id === endIndex) {
-            break
-        }
     }
 
     return {
