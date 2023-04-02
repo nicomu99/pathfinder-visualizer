@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
@@ -20,6 +20,18 @@ export function Visualizer() {
 	const pickingMode = useSelector(selectPickingMode)
 	const animationSpeed = useSelector(selectAnimationSpeed)
 	const [algorithm, setAlgorithm] = useState('dijkstra')
+	const [animationSpeedText, setAnimationSpeedText] = useState('')
+
+	// Get a textual representation of the animation speed
+	useEffect(() => {
+		if(animationSpeed === 5) {
+			setAnimationSpeedText('  Fast')
+		} else if(animationSpeed === 10) {
+			setAnimationSpeedText('Medium')
+		} else if(animationSpeed === 20) {
+			setAnimationSpeedText('  Slow')
+		}
+	}, [animationSpeed])
 
 	/*
 	Dispatches the action to change the tile
@@ -88,8 +100,9 @@ export function Visualizer() {
 				</DropdownButton>
 			</div>
 			<div className={styles.heading}>
-				<h5>Picking Mode: {pickingMode.charAt(0).toUpperCase() + pickingMode.slice(1)}</h5>
-				<h5>Algorithm: {algorithm.charAt(0).toUpperCase() + algorithm.slice(1)}</h5>
+				<h5 className={styles.infoText}>Picking Mode: {pickingMode.charAt(0).toUpperCase() + pickingMode.slice(1)}</h5>
+				<h5 className={styles.infoText}>Animation Speed: {animationSpeedText}</h5>
+				<h5 className={styles.infoText}>Algorithm: {algorithm.charAt(0).toUpperCase() + algorithm.slice(1)}</h5>
 			</div>
 			<Path />
 		</div>
