@@ -1,6 +1,6 @@
 import { runDijkstra } from './dijkstra'
 import { runAStar } from './aStar'
-import { togglePath, toggleWasVisited } from '../redux/mapSlice'
+import { togglePath, toggleWasVisited, toggleAlgorithmRunning} from '../redux/mapSlice'
 import store from '../redux/store'
 
 // Create a delay so the path is updated incrementally
@@ -23,6 +23,7 @@ async function visualizeFocusOrdering(focusOrdering) {
 
 async function runAlgorithm(algorithm) {
 
+    store.dispatch(toggleAlgorithmRunning(true))
     let map = store.getState().map.tiles
     let startIndex = store.getState().map.startIndex
     let endIndex = store.getState().map.endIndex
@@ -49,7 +50,8 @@ async function runAlgorithm(algorithm) {
     }
 
     await visualizeFocusOrdering(algorithmPath.wasVisited)
-    updatePath(algorithmPath.shortestPath)
+    await updatePath(algorithmPath.shortestPath)
+    store.dispatch(toggleAlgorithmRunning(false))
 }
 
 export { runAlgorithm }

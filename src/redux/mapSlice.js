@@ -41,7 +41,8 @@ export const mapSlice = createSlice({
         endIndex: '',
         tilesPerRow: tilesPerRow,
         tileCount: tileCount,
-        animationSpeed: 10
+        animationSpeed: 10,
+        algorithmRunning: false
     },
     reducers: {
         // Toggles a tiles function, meaning if it is a path, wall, end or simply nothing
@@ -61,7 +62,7 @@ export const mapSlice = createSlice({
                     return d
                 })
 
-                if(state.choosingMode === 'start') {
+                if (state.choosingMode === 'start') {
                     state.startIndex = id
                 } else if (state.choosingMode === 'end') {
                     state.endIndex = id
@@ -75,7 +76,7 @@ export const mapSlice = createSlice({
                 }
             }
 
-            if(state.choosingMode === 'wall' && action.payload.button === 'hold') {
+            if (state.choosingMode === 'wall' && action.payload.button === 'hold') {
                 state.tiles[id].mode = state.choosingMode
             } else if (action.payload.button === 'clicked' && state.choosingMode !== 'wall') {
                 state.tiles[id].mode = state.choosingMode
@@ -98,26 +99,31 @@ export const mapSlice = createSlice({
         },
         // Clears the whole map of all highlighting
         clearWholeMap: (state) => {
-            state.tiles = state.tiles.slice()
-            state.tiles.forEach((ele) => {
-                ele.isPath = false
-                ele.mode = 'nothing'
-                ele.wasVisited = false
-            })
+            if (!state.algorithmRunning) {
+                state.tiles = state.tiles.slice()
+                state.tiles.forEach((ele) => {
+                    ele.isPath = false
+                    ele.mode = 'nothing'
+                    ele.wasVisited = false
+                })
 
-            state.startIndex = ''
-            state.endIndex = ''
+                state.startIndex = ''
+                state.endIndex = ''
 
-            return state
+                return state
+            }
+
         },
         clearPath: (state) => {
-            state.tiles = state.tiles.slice()
-            state.tiles.forEach((ele) => {
-                ele.isPath = false
-                ele.wasVisited = false
-            })
+            if (!state.algorithmRunning) {
+                state.tiles = state.tiles.slice()
+                state.tiles.forEach((ele) => {
+                    ele.isPath = false
+                    ele.wasVisited = false
+                })
 
-            return state
+                return state
+            }
         },
         toggleWasVisited: (state, action) => {
             state.tiles = state.tiles.slice()
@@ -127,6 +133,9 @@ export const mapSlice = createSlice({
         },
         setAnimationSpeed(state, action) {
             state.animationSpeed = action.payload
+        },
+        toggleAlgorithmRunning: (state, action) => {
+            state.algorithmRunning = action.payload
         }
     }
 })
@@ -138,7 +147,8 @@ export const {
     clearWholeMap,
     toggleWasVisited,
     setAnimationSpeed,
-    clearPath
+    clearPath,
+    toggleAlgorithmRunning
 } = mapSlice.actions
 
 export const selectMap = (state) => state.map.tiles
