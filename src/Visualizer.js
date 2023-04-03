@@ -21,18 +21,32 @@ export function Visualizer() {
 	const animationSpeed = useSelector(selectAnimationSpeed)
 	const [algorithm, setAlgorithm] = useState('dijkstra')
 	const [animationSpeedText, setAnimationSpeedText] = useState('')
+	const [algorithmText, setAlgorithmText] = useState('Dijkstra')
 	const [algorithmFinished, setAlgorithmFinished] = useState(true)
 
 	// Get a textual representation of the animation speed
 	useEffect(() => {
 		if(animationSpeed === 5) {
-			setAnimationSpeedText('  Fast')
+			setAnimationSpeedText('Fast')
 		} else if(animationSpeed === 10) {
 			setAnimationSpeedText('Medium')
 		} else if(animationSpeed === 20) {
-			setAnimationSpeedText('  Slow')
+			setAnimationSpeedText('Slow')
 		}
 	}, [animationSpeed])
+
+	// Get a textual representation of the algorithm
+	useEffect(() => {
+		if(algorithm === 'dijkstra') {
+			setAlgorithmText('Dijkstra')
+		} else if(algorithm === 'aStar') {
+			setAlgorithmText('A*')
+		} else if(algorithm === 'dfs') {
+			setAlgorithmText('DFS')
+		} else if(algorithm === 'bfs') {
+			setAlgorithmText('BFS')
+		}
+	}, [algorithm])
 
 	/*
 	Dispatches the action to change the tile
@@ -109,8 +123,8 @@ export function Visualizer() {
 					<h5 className={styles.infoText}>Animation Speed: {animationSpeedText}</h5>
 				</div>
 				<div className={styles.flexRow}>
-					<h5 className={styles.infoText}>Algorithm: {algorithm.charAt(0).toUpperCase() + algorithm.slice(1)}</h5>
-					{!algorithmFinished && <h5 className={styles.infoText}>Could not find end</h5>}
+					<h5 className={styles.infoText}>Algorithm: {algorithmText}</h5>
+					{!algorithmFinished && <h5 className={styles.infoText}>No Path Found</h5>}
 				</div>
 			</div>
 			<Path />
