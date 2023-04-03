@@ -61,6 +61,7 @@ export function Visualizer() {
 	highlighting in the map to the store
 	*/
 	function clearMap() {
+		setAlgorithmFinished(true)
 		dispatch(clearWholeMap())
 	}
 
@@ -89,7 +90,6 @@ export function Visualizer() {
 	const changeAnimationSpeed = (newSpeed) => {
 		dispatch(setAnimationSpeed(newSpeed))
 	}
-
 
 	return (
 		<div className={styles.container}>
