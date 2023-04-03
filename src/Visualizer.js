@@ -66,6 +66,7 @@ export function Visualizer() {
 	}
 
 	function clearPathFocusing() {
+		setAlgorithmFinished(true)
 		dispatch(clearPath())
 	}
 
