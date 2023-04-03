@@ -1,12 +1,3 @@
-function reconstructPath(predecessor, current) {
-    let totalPath = [current]
-    while (predecessor[current] !== undefined) {
-        current = predecessor[current]
-        totalPath.unshift(current)
-    }
-    return totalPath
-}
-
 async function runDFS(map, startIndex, endIndex) {
 
     let openList = []
@@ -20,7 +11,7 @@ async function runDFS(map, startIndex, endIndex) {
 
         if(currId === endIndex) {
             return {
-                shortestPath: reconstructPath(predecessor, endIndex),
+                predecessor: predecessor,
                 wasVisited: wasVisited
             }
         }

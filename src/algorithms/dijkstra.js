@@ -1,12 +1,3 @@
-function reconstructPath(predecessor, current) {
-    let totalPath = [current]
-    while (predecessor[current] !== undefined) {
-        current = predecessor[current]
-        totalPath.unshift(current)
-    }
-    return totalPath
-}
-
 // An implementation of the dijkstra pathfinding algorithm
 async function runDijkstra(map, startIndex, endIndex) {
     // Initialize helper arrays
@@ -39,7 +30,7 @@ async function runDijkstra(map, startIndex, endIndex) {
         // Check if we already found end tile
         if (smallestIndex === endIndex) {
             return {
-                shortestPath: reconstructPath(predecessor, endIndex),
+                predecessor: predecessor,
                 wasVisited: wasVisited
             }
         }

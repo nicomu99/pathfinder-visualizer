@@ -23,6 +23,16 @@ async function visualizeFocusOrdering(focusOrdering) {
     }
 }
 
+async function reconstructPath(predecessor, current) {
+    let totalPath = [current]
+    while (predecessor[current] !== undefined) {
+        current = predecessor[current]
+        totalPath.unshift(current)
+    }
+    return totalPath
+}
+
+
 async function runAlgorithm(algorithm) {
 
     store.dispatch(toggleAlgorithmRunning(true))
@@ -58,8 +68,10 @@ async function runAlgorithm(algorithm) {
         return false
     }
 
+    let shortestPath = await reconstructPath(algorithmPath.predecessor, endIndex)
+
     await visualizeFocusOrdering(algorithmPath.wasVisited)
-    await updatePath(algorithmPath.shortestPath)
+    await updatePath(shortestPath)
     store.dispatch(toggleAlgorithmRunning(false))
 
     return true

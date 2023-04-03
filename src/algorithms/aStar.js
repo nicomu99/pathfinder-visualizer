@@ -15,15 +15,6 @@ function manhattanDistance(sourceIndex, destinationIndex) {
     return Math.abs(source.x - destination.x) + Math.abs(source.y - destination.y)
 } 
 
-function reconstructPath(predecessor, current) {
-    let totalPath = [current]
-    while (predecessor[current] !== undefined) {
-        current = predecessor[current]
-        totalPath.unshift(current)
-    }
-    return totalPath
-}
-
 function runAStar(map, startIndex, endIndex) {
     let openSet = [startIndex]
     let wasVisited = []
@@ -58,7 +49,7 @@ function runAStar(map, startIndex, endIndex) {
         // Check if we already found end tile
         if (currentTile.id === endIndex) {
             return {
-                shortestPath: reconstructPath(predecessor, endIndex),
+                predecessor: predecessor,
                 wasVisited: wasVisited
             }
         }

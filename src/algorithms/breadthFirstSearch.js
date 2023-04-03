@@ -1,12 +1,3 @@
-function reconstructPath(predecessor, current) {
-    let totalPath = [current]
-    while (predecessor[current] !== undefined) {
-        current = predecessor[current]
-        totalPath.unshift(current)
-    }
-    return totalPath
-}
-
 async function runBFS(map, startIndex, endIndex) {
     let openList = []
     openList.push(map[startIndex])
@@ -19,7 +10,7 @@ async function runBFS(map, startIndex, endIndex) {
 
         if(currId === endIndex) {
             return {
-                shortestPath: reconstructPath(predecessor, endIndex),
+                predecessor: predecessor,
                 wasVisited: wasVisited
             }
         }
