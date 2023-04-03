@@ -21,6 +21,7 @@ export function Visualizer() {
 	const animationSpeed = useSelector(selectAnimationSpeed)
 	const [algorithm, setAlgorithm] = useState('dijkstra')
 	const [animationSpeedText, setAnimationSpeedText] = useState('')
+	const [algorithmFinished, setAlgorithmFinished] = useState(true)
 
 	// Get a textual representation of the animation speed
 	useEffect(() => {
@@ -63,8 +64,9 @@ export function Visualizer() {
 	/*
 	Runs the algorithm selected
 	*/
-	const runVisualization = () => {
-		runAlgorithm(algorithm)
+	const runVisualization = async () => {
+		let algorithmDidFinish = await runAlgorithm(algorithm) 
+		setAlgorithmFinished(algorithmDidFinish)
 	}
 
 	/*
@@ -100,9 +102,14 @@ export function Visualizer() {
 				</DropdownButton>
 			</div>
 			<div className={styles.heading}>
-				<h5 className={styles.infoText}>Picking Mode: {pickingMode.charAt(0).toUpperCase() + pickingMode.slice(1)}</h5>
-				<h5 className={styles.infoText}>Animation Speed: {animationSpeedText}</h5>
-				<h5 className={styles.infoText}>Algorithm: {algorithm.charAt(0).toUpperCase() + algorithm.slice(1)}</h5>
+				<div className={styles.flexRow}>
+					<h5 className={styles.infoText}>Picking Mode: {pickingMode.charAt(0).toUpperCase() + pickingMode.slice(1)}</h5>
+					<h5 className={styles.infoText}>Animation Speed: {animationSpeedText}</h5>
+				</div>
+				<div className={styles.flexRow}>
+					<h5 className={styles.infoText}>Algorithm: {algorithm.charAt(0).toUpperCase() + algorithm.slice(1)}</h5>
+					{!algorithmFinished && <h5 className={styles.infoText}>Could not find end</h5>}
+				</div>
 			</div>
 			<Path />
 		</div>

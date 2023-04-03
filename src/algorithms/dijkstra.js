@@ -73,7 +73,7 @@ async function runDijkstra(map, startIndex, endIndex) {
 
     if (shortestPath.length === 1) {
         // No path found
-        return
+        return false
     }
 
     return {

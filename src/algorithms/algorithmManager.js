@@ -29,7 +29,7 @@ async function runAlgorithm(algorithm) {
     let endIndex = store.getState().map.endIndex
 
     if (startIndex === '' || endIndex === '') {
-        return
+        return false    
     }
 
     let algorithmPath = null
@@ -45,13 +45,16 @@ async function runAlgorithm(algorithm) {
             break
     }
 
-    if (algorithmPath === null) {
-        return
+    if (algorithmPath === false) {
+        store.dispatch(toggleAlgorithmRunning(false))
+        return false
     }
 
     await visualizeFocusOrdering(algorithmPath.wasVisited)
     await updatePath(algorithmPath.shortestPath)
     store.dispatch(toggleAlgorithmRunning(false))
+
+    return true
 }
 
 export { runAlgorithm }
