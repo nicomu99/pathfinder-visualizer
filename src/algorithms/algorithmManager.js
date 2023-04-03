@@ -1,6 +1,7 @@
 import { runDijkstra } from './dijkstra'
 import { runAStar } from './aStar'
 import { runDFS } from './depthFirstSearch'
+import { runBFS } from './breadthFirstSearch'
 import { togglePath, toggleWasVisited, toggleAlgorithmRunning} from '../redux/mapSlice'
 import store from '../redux/store'
 
@@ -44,6 +45,9 @@ async function runAlgorithm(algorithm) {
             break
         case 'dfs':
             algorithmPath = await runDFS(map, startIndex, endIndex)
+            break
+        case 'bfs':
+            algorithmPath = await runBFS(map, startIndex, endIndex)
             break
         default:
             break
