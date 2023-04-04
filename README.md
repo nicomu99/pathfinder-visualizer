@@ -1,70 +1,37 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Pathfinding Visualizer
 
-## Available Scripts
+This project is a visual guide of a few pathfinding algorithms. The project was created using React.js, Redux and plain JavaScript. 
 
-In the project directory, you can run:
+## Learning Goals
 
-### `npm start`
+- Strengthen knowledge of D3, React
+- Get an insight into Redux
+- Reiterate pathfinding algorithms
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Challenges
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+I initially wanted to use D3 to visualize the algorithms. However, D3 rerendered the whole map each time a tile was changed.
+This quickly became a huge performance overhead. With 1250 Tiles, the tiles were updated more than 500.000 times if the start and end node where far apart from each other. I therefore changed my plans and left D3 out of the project. The problem still persisted, until I started using React.memo().
 
-### `npm test`
+Another challenge I had to face was the Redux store, since I had no knowledge of how to use it. I have read multiple times before, that Redux is a library each React developer should know how to use, so this project provided a good opportunity to get to know it. The documentation provided a straightforward guide into how to use it. It turned out very easy to use.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## The Project
 
-### `npm run build`
+As stated above, this project visualizes a few pathfinding algorithms on 2D-Tilemap. The map consists of 25 rows with 50 tiles each, so a total of 1250 tiles. This number can be changed in the mapSlice.js file. No matter what combination of integers is inserted, the visualizer should still work.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The user can draw start nodes, end nodes and wall nodes onto the map to their liking. These nodes provide the challenge the algorithms have to face. The user can also choose between 4 different algorithms. The algorithms are:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Dijkstra's Algorithm
+- A* Search
+- Depth-First Search
+- Breadth-First Search
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+By running the algorithms, the user can see how each algorithm solves the challenge. Through the choice "Clear Path" in the dropdown menu, the user can only clear the path the algorithm has found and then compare it to a different algorithm. 
 
-### `npm run eject`
+## Take Aways
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+This project was a great opportunity to get to know Redux. I also had the chance to reiterate my knowledge of pathfinding algorithms and React. Furthermore, I learned how to improve performance on a React project by using React.memo().
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
