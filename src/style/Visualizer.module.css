@@ -8,7 +8,7 @@
     padding: 20px 0;
     display: flex;
     justify-content: space-evenly;
-    align-items: flex-end;
+    align-items: center;
     color: #fff;
     width: 1400px;
     margin: 0 auto;
@@ -35,4 +35,13 @@ h1, h3, h5 {
 .flexRow {
     display: flex;
     flex-direction: column;    
+}
+
+.info {
+    transition: 300ms linear;
+}
+
+.info:hover {
+    cursor: pointer;
+    opacity: 0.7;
 }

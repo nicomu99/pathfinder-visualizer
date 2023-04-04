@@ -14,6 +14,33 @@ import {
 	setAnimationSpeed
 } from './redux/mapSlice'
 import { runAlgorithm } from './algorithms/algorithmManager';
+import InstructionsModal from './instructionsModal';
+
+import { IoAlertCircleOutline } from "react-icons/io5";
+/*
+Copyright notice for the icons used in this project:
+
+
+The MIT License(MIT)
+Copyright (c) 2015-present Ionic (http://ionic.io/)
+	
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+	
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+	
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.*/
 
 export function Visualizer() {
 	const dispatch = useDispatch()
@@ -23,27 +50,28 @@ export function Visualizer() {
 	const [animationSpeedText, setAnimationSpeedText] = useState('')
 	const [algorithmText, setAlgorithmText] = useState('Dijkstra')
 	const [algorithmFinished, setAlgorithmFinished] = useState(true)
+	const [showInstructions, setShowInstructions] = useState(false)
 
 	// Get a textual representation of the animation speed
 	useEffect(() => {
-		if(animationSpeed === 5) {
+		if (animationSpeed === 5) {
 			setAnimationSpeedText('Fast')
-		} else if(animationSpeed === 10) {
+		} else if (animationSpeed === 10) {
 			setAnimationSpeedText('Medium')
-		} else if(animationSpeed === 20) {
+		} else if (animationSpeed === 20) {
 			setAnimationSpeedText('Slow')
 		}
 	}, [animationSpeed])
 
 	// Get a textual representation of the algorithm
 	useEffect(() => {
-		if(algorithm === 'dijkstra') {
+		if (algorithm === 'dijkstra') {
 			setAlgorithmText('Dijkstra')
-		} else if(algorithm === 'aStar') {
+		} else if (algorithm === 'aStar') {
 			setAlgorithmText('A*')
-		} else if(algorithm === 'dfs') {
+		} else if (algorithm === 'dfs') {
 			setAlgorithmText('DFS')
-		} else if(algorithm === 'bfs') {
+		} else if (algorithm === 'bfs') {
 			setAlgorithmText('BFS')
 		}
 	}, [algorithm])
@@ -81,7 +109,7 @@ export function Visualizer() {
 	Runs the algorithm selected
 	*/
 	const runVisualization = async () => {
-		let algorithmDidFinish = await runAlgorithm(algorithm) 
+		let algorithmDidFinish = await runAlgorithm(algorithm)
 		setAlgorithmFinished(algorithmDidFinish)
 	}
 
@@ -96,6 +124,9 @@ export function Visualizer() {
 		<div className={styles.container}>
 			<div className={styles.menu}>
 				<h1>Pathfinding Visualizer</h1>
+				<div className={styles.info}>
+					<IoAlertCircleOutline size="38" onClick={() => setShowInstructions(true)}/>
+				</div>
 				<DropdownButton id="dropdown-basic-button" title={"Choose Picking Mode"} menuVariant="dark" variant="dark">
 					<Dropdown.Item onClick={() => choosePickingMode('wall')}>Wall</Dropdown.Item>
 					<Dropdown.Item onClick={() => choosePickingMode('start')}>Start</Dropdown.Item>
@@ -129,6 +160,7 @@ export function Visualizer() {
 				</div>
 			</div>
 			<Path />
+			<InstructionsModal show={showInstructions} handleClose={() => setShowInstructions(false)} />
 		</div>
 	);
 }
